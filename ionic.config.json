@@ -1,0 +1,7 @@
+{
+  "name": "quotes-lib",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
