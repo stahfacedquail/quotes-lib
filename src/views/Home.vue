@@ -23,7 +23,7 @@
               <ion-icon v-if="quote.is_favourite" :icon="heart"></ion-icon>
               <ion-icon v-else :icon="heartOutline"></ion-icon>
             </ion-button>
-            <ion-button fill="clear">
+            <ion-button fill="clear" @click="deleteQuote(quote.id)">
               <ion-icon :icon="trashOutline"></ion-icon>
             </ion-button>
           </ion-card-content>
@@ -68,13 +68,21 @@ export default defineComponent({
   },
 
   methods: {
-    updateFavourite(quote, idx) {
+    updateFavourite(quote, idx) { //currently, this is being used for Recently Added
       let success = db.updateQuote(quote.id, { is_favourite: !quote.is_favourite });
       if(! success.is_favourite) {
-        this.recentQuotes[idx].is_favourite = !quote.is_favourite; //reset because update not successful
+        this.recentQuotes[idx].is_favourite = !quote.is_favourite; //reset because update was not successful
       }
 
       this.recentQuotes = this.recentQuotes.concat([]); //necessary to trigger reactivity (recognises whole array being replaced vs one item being modified)
+    },
+
+    deleteQuote(quoteId) { //currently, this is being used for Recently Added
+      let successDelete = db.deleteQuote(quoteId);
+
+      if(successDelete) {
+        this.recentQuotes = db.getRecentlyAddedQuotes();
+      }
     }
   }
 });

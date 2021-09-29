@@ -148,6 +148,83 @@ function findAuthorById(authorId) {
     return findElementById("author", authorId);
 }
 
+function deleteQuote(quoteId) {
+    let found = false;
+    let deleteObj;
+
+    for(let i = 0; i < quotes.length && !found; i++) {
+        if(quotes[i].id == quoteId) {
+            deleteObj = quotes.splice(i, 1)[0];
+            found = true;
+        }
+    }
+
+    if(deleteObj) {
+        //delete related quote_tags entries
+        for(let i = 0; i < quote_tags.length; i++) {
+            if(quote_tags[i].quote_id == quoteId) {
+                quote_tags.splice(i, 1);
+                i--;
+            }
+        }
+
+        //if last quote in title, delete all related author_title entries and delete title
+        let quotesInTitle = 0;
+        for(let i = 0; i < quotes.length; i++) {
+            if(quotes[i].title_id == deleteObj.title_id) {
+                quotesInTitle++;
+                break; //there's still a quote in the given title
+            }
+        }
+
+        if(quotesInTitle == 0) {
+            let _authors = [];
+
+            for(let i = 0; i < title_authors.length; i++) {
+                if(title_authors[i].title_id == deleteObj.title_id) {
+                    _authors = _authors.concat(title_authors.splice(i, 1)); //taking note of the authors of the title being deleted
+                    i--;
+                }
+            }
+
+            for(let i = 0; i < titles.length; i++) {
+                if(titles[i].id == deleteObj.title_id) {
+                    titles.splice(i, 1);
+                    break;
+                }
+            }
+
+            //if last quote by author(s), delete author(s)
+            let allAuthors = title_authors.map((obj) => {
+                return obj.author_id;
+            });
+
+            for(let i = 0; i < _authors.length; i++) {
+                if(! isIn(_authors[i].author_id, allAuthors)) {
+                    for(let j = 0; j < authors.length; j++) {
+                        if(authors[j].id == _authors[i].author_id) {
+                            authors.splice(j, 1);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    } else
+        return false;
+}
+
+function isIn(item, arr) { //helper function to determine whether a given item appears in an array.  Works best for primitive data types.
+    for(let i = 0; i < arr.length; i++) {
+        if(arr[i] == item)
+            return true;
+    }
+
+    return false;
+}
+
 function joinQuoteWithTags(quoteId) {
     let quote = findQuoteById(quoteId);
 
@@ -244,5 +321,6 @@ export default {
     findQuoteById,
     getQuoteWithAllAttributes, 
     getRecentlyAddedQuotes,
-    updateQuote
+    updateQuote,
+    deleteQuote
 };
