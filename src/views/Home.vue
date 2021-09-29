@@ -14,6 +14,10 @@
       </ion-header>
     
       <div id="container">
+        <ion-button href="/add-quote">
+          <ion-icon :icon="addOutline"></ion-icon> Add new quote
+        </ion-button>
+
         <ion-card v-for="(quote, idx) in recentQuotes" :key="quote.id" style="border: solid black 12;">
           <ion-card-content>
             {{ quote.text }}
@@ -36,7 +40,7 @@
 <script>
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardContent, IonIcon, IonButton } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import{ heartOutline, heart, trashOutline } from "ionicons/icons";
+import{ heartOutline, heart, trashOutline, addOutline } from "ionicons/icons";
 import db from '../db/mockDb.js';
 
 export default defineComponent({
@@ -63,7 +67,8 @@ export default defineComponent({
     return {
       heartOutline,
       heart,
-      trashOutline
+      trashOutline,
+      addOutline
     };
   },
 
