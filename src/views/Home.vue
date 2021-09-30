@@ -43,10 +43,6 @@
           </ion-card-content>
         </ion-card>
 
-        <a href="/all-quotes" style="float:left;">See all quotes...</a>
-        <a href="/favourite-quotes" style="float:right;">See favourite quotes...</a>
-
-
       </div>
     </ion-content>
   </ion-page>
