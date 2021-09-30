@@ -2,10 +2,20 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>QuotePad</ion-title>
+        <ion-buttons>
+            <ion-button @click="openMenu">
+                <ion-icon :icon="menuOutline"></ion-icon>
+            </ion-button>
+            <ion-title>
+                Home
+            </ion-title>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
-    
+
+    <Menu></Menu>
+    <ion-router-outlet id="menu-sibling" />
+  
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
@@ -19,10 +29,10 @@
         </ion-button>
 
         <ion-card v-for="(quote, idx) in recentQuotes" :key="quote.id" style="border: solid black 12;">
-          <ion-card-content>
+          <ion-card-content class="quoteText">
             {{ quote.text }}
           </ion-card-content>
-          <ion-card-content style="border-top: 1px solid gray;">
+          <ion-card-content style="border-top:1px solid gray; padding:0px; margin-top:13px;">
             <ion-button fill="clear" @click="updateFavourite(quote, idx)">
               <ion-icon v-if="quote.is_favourite" :icon="heart"></ion-icon>
               <ion-icon v-else :icon="heartOutline"></ion-icon>
@@ -32,15 +42,21 @@
             </ion-button>
           </ion-card-content>
         </ion-card>
+
+        <a href="/all-quotes" style="float:left;">See all quotes...</a>
+        <a href="/favourite-quotes" style="float:right;">See favourite quotes...</a>
+
+
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script>
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardContent, IonIcon, IonButton } from '@ionic/vue';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardContent, IonIcon, IonButton, IonButtons, IonRouterOutlet, menuController } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import{ heartOutline, heart, trashOutline, addOutline } from "ionicons/icons";
+import Menu from "../components/Menu.vue";
+import{ heartOutline, heart, trashOutline, addOutline, menuOutline } from "ionicons/icons";
 import db from '../db/mockDb.js';
 
 export default defineComponent({
@@ -54,7 +70,10 @@ export default defineComponent({
     IonCard,
     IonCardContent,
     IonIcon,
-    IonButton
+    IonButton,
+    IonButtons,
+    IonRouterOutlet,
+    Menu
   },
 
   data() {
@@ -68,7 +87,8 @@ export default defineComponent({
       heartOutline,
       heart,
       trashOutline,
-      addOutline
+      addOutline,
+      menuOutline
     };
   },
 
@@ -88,6 +108,10 @@ export default defineComponent({
       if(successDelete) {
         this.recentQuotes = db.getRecentlyAddedQuotes();
       }
+    },
+
+    openMenu() {
+      menuController.open("first");
     }
   }
 });
@@ -119,5 +143,14 @@ export default defineComponent({
 
 #container a {
   text-decoration: none;
+}
+
+.quoteText {
+  display: -webkit-box;
+  max-width: 100%;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  padding-bottom: 0px; /* withouth this, one more line appears after the clamp */
 }
 </style>

@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import Home from '../views/Home.vue';
 import AddQuote from "../views/AddQuote.vue";
+import AllQuotes from '../views/AllQuotes.vue';
+import FavouriteQuotes from "../views/FavouriteQuotes.vue";
 
 const routes = [
   {
@@ -16,6 +18,16 @@ const routes = [
     path: '/add-quote',
     name: 'AddQuote',
     component: AddQuote
+  },
+  {
+    path: '/all-quotes',
+    name: 'AllQuotes',
+    component: AllQuotes
+  },
+  {
+    path: '/favourite-quotes',
+    name: 'FavouriteQuotes',
+    component: FavouriteQuotes
   }
 ]
 
