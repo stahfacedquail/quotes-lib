@@ -106,7 +106,7 @@ let quote_tags = [
 	{   quote_id: 7,    tag_id: 9   }
 ];
 
-function findElementById(elementType, elementId) {
+const findElementById = (elementType, elementId) => {
     let searchTable;
 
     switch(elementType) {
@@ -132,23 +132,23 @@ function findElementById(elementType, elementId) {
     return null;
 }
 
-function findQuoteById(quoteId) {
+const findQuoteById = quoteId => {
     return findElementById("quote", quoteId);
 }
 
-function findTagById(tagId) {
+const findTagById = tagId => {
     return findElementById("tag", tagId);
 }
 
-function findTitleById(titleId) {
+const findTitleById = titleId => {
     return findElementById("title", titleId);
 }
 
-function findAuthorById(authorId) {
+const findAuthorById = authorId => {
     return findElementById("author", authorId);
 }
 
-function deleteQuote(quoteId) {
+const deleteQuote = quoteId => {
     let found = false;
     let deleteObj;
 
@@ -216,7 +216,7 @@ function deleteQuote(quoteId) {
         return false;
 }
 
-function isIn(item, arr) { //helper function to determine whether a given item appears in an array.  Works best for primitive data types.
+const isIn = (item, arr) => { //helper function to determine whether a given item appears in an array.  Works best for primitive data types.
     for(let i = 0; i < arr.length; i++) {
         if(arr[i] == item)
             return true;
@@ -225,7 +225,7 @@ function isIn(item, arr) { //helper function to determine whether a given item a
     return false;
 }
 
-function joinQuoteWithTags(quoteId) {
+const joinQuoteWithTags = quoteId => {
     let quote = findQuoteById(quoteId);
 
     if(quote) {
@@ -248,7 +248,7 @@ function joinQuoteWithTags(quoteId) {
     return null;
 }
 
-function joinTitleWithAuthors(titleId) {
+const joinTitleWithAuthors = titleId => {
     let title = findTitleById(titleId);
 
     if(title) {
@@ -271,7 +271,7 @@ function joinTitleWithAuthors(titleId) {
     return null;
 }
 
-function getQuoteWithAllAttributes(quoteId) {
+const getQuoteWithAllAttributes = quoteId => {
     let quoteAndTags = joinQuoteWithTags(quoteId);
 
     if(quoteAndTags) {
@@ -288,7 +288,7 @@ function getQuoteWithAllAttributes(quoteId) {
     return null;
 }
 
-function sortQuotesByDate(quoteA, quoteB) { //sort from most recent to oldest
+const sortQuotesByDate = (quoteA, quoteB) => { //sort from most recent to oldest
     if(quoteA.date_added > quoteB.date_added)
         return -1;
     else if(quoteA.date_added < quoteB.date_added)
@@ -297,13 +297,13 @@ function sortQuotesByDate(quoteA, quoteB) { //sort from most recent to oldest
         return 0;
 }
 
-function getRecentlyAddedQuotes() {
+const getRecentlyAddedQuotes = () => {
     quotes.sort(sortQuotesByDate);
 
     return quotes.slice(0, NUM_RECENT_QUOTES);
 }
 
-function updateQuote(quoteId, newProps) {
+const updateQuote = (quoteId, newProps) => {
     let quote = findQuoteById(quoteId);
 
     for(let prop in newProps) {

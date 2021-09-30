@@ -1,5 +1,5 @@
 <template>
-    <ion-menu side="start" menu-id="first" content-id="menu-sibling">
+    <ion-menu side="start" menu-id="first" content-id="container">
         <ion-content>
         <ion-list>
             <ion-item href="/all-quotes">All quotes</ion-item>
