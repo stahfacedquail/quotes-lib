@@ -87,16 +87,6 @@ export default defineComponent({
     };
   },
 
-  /*mounted() {
-    this.recentQuotes = this.abc;
-  },
-
-  computed: {
-    abc() {
-      return db.getRecentlyAddedQuotes();
-    }
-  },*/
-
   setup() {
     return {
       addOutline,
@@ -106,74 +96,10 @@ export default defineComponent({
 
   methods: {
     updateFavourite(quote, idx) {
-      // let final = this.recentQuote♦s;
-      //currently, this is being used for Recently Added
-      /*this.recentQuotes[idx] = {};*/
-      
-      this.recentQuotes[idx] = db.updateQuote(quote.id, {
-        is_favourite: !quote.is_favourite,
-      });
-
-      console.log(this.recentQuotes[idx]);
-
-      //app.set(this.recentQuotes, idx, quote);
-      //this.recentQuotes = [].concat(db.getRecentlyAddedQuotes());
-
-      /*let newArr = [];
-      for(let i = 0; i < this.recentQuotes.length; i++)
-        newArr.push(this.recentQuotes[i]);
-
-      let arr = db.getRecentlyAddedQuotes();
-      console.log(arr[0]);
-      this.recentQuotes = [];
-      this.recentQuotes.push(arr[0]);
-      this.recentQuotes.push({id: 11, text: "ya"});
-      
-
-      console.log("suc",quote.is_favourite)
-
-      /*if (!success.is_favourite) {
-        // this.recentQuotes[idx].is_favourite = !quote.is_favourite; //reset because update was not successful
-        this.recentQuotes[idx] = {
-          ...this.recentQuotes[idx],
-          is_favourite: quote.is_favourite
-        }
-      } /*else {
-        // final[idx].is_favourite = quote.is_favourite;
-        /*this.recentQuotes = []
-        this.recentQuotes[idx] = {
-          ...this.recentQuotes[idx],
-          is_favourite: quote.is_favourite
-        }
-
-      }*/
-
-      /*let obj = {};
-      for(let p in quote)
-        obj[p] = quote[p];
-
-      quote = {};
-      for(let p in obj)
-        quote[p] = obj[p];
-
-      console.log(quote);
-
-      let newArr = [];
-      for(let i = 0; i < this.recentQuotes.length; i++)
-        if(i == idx)
-          newArr[i] = quote;
-        else
-          newArr[i] = this.recentQuotes[i];
-      
-      this.recentQuotes = [];
-      for(let i = 0; i < newArr.length; i++)
-        this.recentQuotes.push(newArr[i]);*/
-
-      // console.log("abx", final[idx]);
-      // update recentQuotes
-
-      //this.$emit("updateFavouriteComplete");
-      //quote = this.recentQuotes[idx]; //necessary to trigger reactivity (recognises whole array being replaced vs one item being modified)
+      this.recentQuotes[idx] = db.updateQuote(
+        quote.id,
+        { is_favourite: !quote.is_favourite  }
+      );
     },
 
     deleteQuote(quoteId) {
