@@ -4,8 +4,7 @@
             {{ quote.text }}
         </ion-card-content>
         <ion-card-content style="border-top:1px solid gray; padding:0px; margin-top:13px;">
-        <ion-button fill="clear" >
-            <!-- @click="updateFavourite(quote, idx)" -->
+        <ion-button fill="clear" @click="updateFavourite">
             <ion-icon v-if="quote.is_favourite" :icon="heart"></ion-icon>
             <ion-icon v-else :icon="heartOutline"></ion-icon>
         </ion-button>
@@ -20,7 +19,7 @@
 <script>
 import { IonCard, IonCardContent, IonButton, IonIcon } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import{ heartOutline, heart, trashOutline } from "ionicons/icons";
+import { heartOutline, heart, trashOutline } from "ionicons/icons";
 
 export default defineComponent({
   name: 'QuoteCard',
@@ -40,7 +39,15 @@ export default defineComponent({
       heart,
       trashOutline
     };
-  }
+  },
+  methods: {
+      updateFavourite() {
+          this.$emit("updateFavourite", this.quote, this.index);
+      }
+  },
+  emits: [
+      "updateFavourite"
+  ]
 });
 </script>
 

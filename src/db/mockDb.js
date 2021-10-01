@@ -120,10 +120,12 @@ function findElementById(elementType, elementId) {
             break;
     }
 
+    let elem = {};
+
     if(searchTable) {
         for(let i = 0; i < searchTable.length; i++) {
             if(searchTable[i].id == elementId)
-                return searchTable[i];
+                return Object.assign(elem, searchTable[i]);
         }
     
         return null;
@@ -300,21 +302,25 @@ function sortQuotesByDate(quoteA, quoteB) { //sort from most recent to oldest
 function getRecentlyAddedQuotes() {
     quotes.sort(sortQuotesByDate);
 
-    return quotes.slice(0, NUM_RECENT_QUOTES);
+    let arr = quotes.slice(0, NUM_RECENT_QUOTES);
+    
+    let returnArr = [];
+    for(let i = 0; i < arr.length; i++)
+        returnArr.push(Object.assign({}, arr[i]));
+
+    return returnArr;
 }
 
 function updateQuote(quoteId, newProps) {
     let quote = findQuoteById(quoteId);
+    if(!quote)
+        return null;
 
-    for(let prop in newProps) {
-        if(prop in quote) {
+    for(let prop in newProps)
+        if(prop in quote)
             quote[prop] = newProps[prop];
-            newProps[prop] = true; //success
-        } else
-            newProps[prop] = false;
-    }
 
-    return newProps;
+    return quote;
 }
 
 export default {
