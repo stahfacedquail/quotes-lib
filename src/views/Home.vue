@@ -14,7 +14,7 @@
     <Menu />
   
     <ion-content :fullscreen="true" id="container">    
-      <ion-button href="/add-quote">
+      <ion-button router-link="/add-quote">
         <ion-icon :icon="addOutline"></ion-icon> Add new quote
       </ion-button>
 
@@ -38,7 +38,7 @@
           :title="obj.title"
           :authors="obj.authors"
 
-          :href="'/quotes/title/' + obj.title.id"
+          :router-link="'/quotes/title/' + obj.title.id"
         />
       </ion-list>
     </ion-content>

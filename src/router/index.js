@@ -3,7 +3,7 @@ import Home from '../views/Home.vue';
 import AddQuote from "../views/AddQuote.vue";
 import AllQuotes from '../views/AllQuotes.vue';
 import FavouriteQuotes from "../views/FavouriteQuotes.vue";
-import QuotesInTitle from "../views/FavouriteQuotes.vue";
+import QuotesInTitle from "../views/QuotesInTitle.vue";
 
 const routes = [
   {
