@@ -2,8 +2,8 @@
     <ion-menu side="start" menu-id="first" content-id="container">
         <ion-content>
         <ion-list>
-            <ion-item router-link="/all-quotes">All quotes</ion-item>
-            <ion-item router-link="/favourite-quotes">Favourites</ion-item>
+            <ion-item router-link="/all-quotes" @click="closeMenu">All quotes</ion-item>
+            <ion-item router-link="/favourite-quotes" @click="closeMenu">Favourites</ion-item>
         </ion-list>
         </ion-content>
     </ion-menu>
@@ -20,7 +20,15 @@ export default defineComponent({
       IonContent,
       IonList,
       IonItem
-  }
+  },
+  methods: {
+      closeMenu() {
+          this.$emit("close-menu");
+      }
+  },
+  emits: [
+      "close-menu"
+  ]
 });
 
 </script>

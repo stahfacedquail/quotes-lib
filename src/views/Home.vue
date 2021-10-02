@@ -11,7 +11,7 @@
       </ion-toolbar>
     </ion-header>
 
-    <Menu />
+    <Menu @close-menu="closeMenu" />
   
     <ion-content :fullscreen="true" id="container">    
       <ion-button router-link="/add-quote">
@@ -124,6 +124,10 @@ export default defineComponent({
     openMenu() {
       menuController.open("first");
     },
+
+    closeMenu() {
+      menuController.close("first");
+    }
   }
 });
 </script>
