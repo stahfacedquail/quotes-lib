@@ -52,7 +52,7 @@ let quotes = [
 		id: 1,
 		text: "The pattern of apartheid, once visible at all scales, is now only visible at smaller scales.  This makes apartheid harder to see, but easier to survive.",
 		title_id: 1,
-		is_favourite: false,
+		is_favourite: true,
 		date_added: new Date("2021-08-11")
 	},
 
@@ -68,7 +68,7 @@ let quotes = [
 		id: 3,
 		text: "   people won't see you as just another woman any more, but as a white woman who hangs with brownies, and you'll lose a bit of your privilege, you should still check it, though, have you heard the expression, check your privilege, babe?\n   Courtney replied that seeing as Yazz is the daughter of a professor and a very well-known theatre director, she's hardly underprivileged herself, whereas she, Courtney, comes from a really poor community where it's normal to be working in a factory at sixteen and have your first child as a single mother at seventeen, and that her father's farm is effectively owned by the bank\n   yes but I'm black, Courts, which makes me more oppressed than anyone who isn't, except Waris who is the most oppressed of all of them (although don't tell her that)\n   in five categories: black, Muslim, female, poor, hijabbed\n   she's the only one Yazz can't tell to check her privilege\n   Courtney replied that Roxane Gay warned against the idea of playing 'privilege Olympics' and wrote in Bad Feminist that privilege is relative and contextual, and I agree, Yazz, I mean, where does it all end?  is Obama less privileged than a white hillbilly growing up in a trailer park with a junkie single mother and a jailbird father?  is a severely disabled person more privileged than a Syrian asylum-seeker who's been tortured?  Roxane argues that we have to find a new discourse for discussing inequality.",
 		title_id: 2,
-		is_favourite: false,
+		is_favourite: true,
 		date_added: new Date("2021-05-23")
 	},
 
@@ -132,7 +132,7 @@ let quotes = [
         id: 11,
         text: "... it's wrong of you to think that love leaves room for nothing else.",
         title_id: 6,
-        is_favourite: false,
+        is_favourite: true,
         date_added: new Date("2018-10-03")
     },
 
@@ -156,7 +156,7 @@ let quotes = [
         id: 14,
         text: "Masculinity and the misogyny it allows is so embedded men rarely recognise it. It affects our physical and mental health, and it builds walls few of us even acknowledge, let alone attempt to peer beyond. \"The LGBTQ movement is having the argument for all of us,\" says Jukes. \"In essence, they are fighting this battle for everyone, gnawing away at the edges of these definitions of femininity and masculinity and we will all be liberated by their success.\"",
         title_id: 7,
-        is_favourite: false,
+        is_favourite: true,
         date_added: new Date("2018-11-07")
     },
 
@@ -180,7 +180,7 @@ let quotes = [
         id: 17,
         text: "Get a good night's sleep and do a great day's work.",
         title_id: 9,
-        is_favourite: false,
+        is_favourite: true,
         date_added: new Date("2020-12-15")
     }
 ];
@@ -461,6 +461,10 @@ const getAllQuotes = () => {
     return getQuotes("all");
 }
 
+const getFavouriteQuotes = () => {
+    return getQuotes("favourite");
+}
+
 const getQuotes = (option) => {
     let origArr;
 
@@ -472,6 +476,9 @@ const getQuotes = (option) => {
             break;
         } case "all": {
             origArr = quotes;
+            break;
+        } case "favourite": {
+            origArr = quotes.filter(quote => quote.is_favourite);
         }
     }
 
@@ -520,6 +527,7 @@ export default {
     getQuoteWithAllAttributes, 
     getRecentlyAddedQuotes,
     getAllQuotes,
+    getFavouriteQuotes,
     getAllTitlesAndAuthors,
     updateQuote,
     deleteQuote
