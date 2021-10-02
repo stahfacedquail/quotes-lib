@@ -483,6 +483,18 @@ const getAllTitlesAndAuthors = () => {
     for(let i = 0; i < titles.length; i++)
         titlesAndAuthors.push(joinTitleWithAuthors(titles[i].id));
 
+    titlesAndAuthors.sort((a, b) => {
+        let title1FirstLetter = a.title.name[0].toUpperCase();
+        let title2FirstLetter = b.title.name[0].toUpperCase();
+
+        if(title1FirstLetter > title2FirstLetter)
+            return 1;
+        else if(title1FirstLetter < title2FirstLetter)
+            return -1;
+        
+        return 0;
+    })
+
     return titlesAndAuthors;
 }
 
