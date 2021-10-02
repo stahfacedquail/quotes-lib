@@ -454,21 +454,30 @@ const sortQuotesByDate = (quoteA, quoteB) => { //sort from most recent to oldest
 }
 
 const getRecentlyAddedQuotes = () => {
-    quotes.sort(sortQuotesByDate);
-
-    let arr = quotes.slice(0, NUM_RECENT_QUOTES);
-    
-    let returnArr = [];
-    for(let i = 0; i < arr.length; i++)
-        returnArr.push(Object.assign({}, arr[i]));
-
-    return returnArr;
+    return getQuotes("recent");
 }
 
 const getAllQuotes = () => {
+    return getQuotes("all");
+}
+
+const getQuotes = (option) => {
+    let origArr;
+
+    switch(option) {
+        case "recent": {
+            quotes.sort(sortQuotesByDate);
+
+            origArr = quotes.slice(0, NUM_RECENT_QUOTES);
+            break;
+        } case "all": {
+            origArr = quotes;
+        }
+    }
+
     let returnArr = [];
-    for(let i = 0; i < quotes.length; i++)
-        returnArr.push(Object.assign({}, quotes[i]));
+    for(let i = 0; i < origArr.length; i++)
+        returnArr.push(Object.assign({}, origArr[i]));
 
     return returnArr;
 }

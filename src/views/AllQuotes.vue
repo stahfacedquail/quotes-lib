@@ -19,7 +19,7 @@
           v-for="(quote, idx) in allQuotes"
           :key="idx"
           :quote="quote"
-          :index="idx" 
+          :index="idx"
           @update-favourite="updateFavourite"
           @delete-quote="deleteQuote"
         />
