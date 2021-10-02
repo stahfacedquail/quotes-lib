@@ -237,7 +237,7 @@ let quote_tags = [
     {   quote_id: 17,   tag_id: 15  }
 ];
 
-const findElementById = (elementType, elementId) => {
+const findElementById = (elementType, elementId, returnTrueObj) => {
     let searchTable;
 
     switch(elementType) {
@@ -256,8 +256,12 @@ const findElementById = (elementType, elementId) => {
 
     if(searchTable) {
         for(let i = 0; i < searchTable.length; i++) {
-            if(searchTable[i].id == elementId)
-                return Object.assign(elem, searchTable[i]);
+            if(searchTable[i].id == elementId) {
+                if(returnTrueObj)
+                    return searchTable[i];
+                else
+                    return Object.assign(elem, searchTable[i]);
+            }
         }
     
         return null;
@@ -266,24 +270,24 @@ const findElementById = (elementType, elementId) => {
     return null;
 }
 
-const findQuoteById = quoteId => {
-    return findElementById("quote", quoteId);
+const findQuoteById = (quoteId, returnTrueObj) => {
+    return findElementById("quote", quoteId, returnTrueObj);
 }
 
-const findTagById = tagId => {
-    return findElementById("tag", tagId);
+const findTagById = (tagId, returnTrueObj) => {
+    return findElementById("tag", tagId, returnTrueObj);
 }
 
-const findTitleById = titleId => {
-    return findElementById("title", titleId);
+const findTitleById = (titleId, returnTrueObj) => {
+    return findElementById("title", titleId, returnTrueObj);
 }
 
-const findAuthorById = authorId => {
-    return findElementById("author", authorId);
+const findAuthorById = (authorId, returnTrueObj) => {
+    return findElementById("author", authorId, returnTrueObj);
 }
 
-const findTitleTypeById = typeId => {
-    return findElementById("type", typeId);
+const findTitleTypeById = (typeId, returnTrueObj) => {
+    return findElementById("type", typeId, returnTrueObj);
 }
 
 const deleteQuote= quoteId => {
@@ -497,15 +501,17 @@ const getQuotes = (option, optionId) => {
 }
 
 const updateQuote = (quoteId, newProps) => {
-    let quote = findQuoteById(quoteId);
+    let quote = findQuoteById(quoteId, true);
+
     if(!quote)
         return null;
 
     for(let prop in newProps)
-        if(prop in quote)
+        if(prop in quote) {
             quote[prop] = newProps[prop];
+        }
 
-    return quote;
+    return Object.assign({}, quote); //update the real quote object, but return a copy so that Vue reactivity is triggered
 }
 
 const getAllTitlesAndAuthors = () => {

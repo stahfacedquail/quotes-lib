@@ -111,6 +111,8 @@ export default defineComponent({
         quote.id,
         { is_favourite: !quote.is_favourite  }
       );
+
+      console.log(this.recentQuotes[idx]);
     },
 
     deleteQuote(quoteId) {
