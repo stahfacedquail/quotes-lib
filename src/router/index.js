@@ -3,6 +3,7 @@ import Home from '../views/Home.vue';
 import AddQuote from "../views/AddQuote.vue";
 import AllQuotes from '../views/AllQuotes.vue';
 import FavouriteQuotes from "../views/FavouriteQuotes.vue";
+import QuotesInTitle from "../views/FavouriteQuotes.vue";
 
 const routes = [
   {
@@ -28,6 +29,11 @@ const routes = [
     path: '/favourite-quotes',
     name: 'FavouriteQuotes',
     component: FavouriteQuotes
+  },
+  {
+    path: '/quotes/title/:id',
+    name: "QuotesInTitle",
+    component: QuotesInTitle
   }
 ]
 

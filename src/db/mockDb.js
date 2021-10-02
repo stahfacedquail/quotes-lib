@@ -465,6 +465,14 @@ const getRecentlyAddedQuotes = () => {
     return returnArr;
 }
 
+const getAllQuotes = () => {
+    let returnArr = [];
+    for(let i = 0; i < quotes.length; i++)
+        returnArr.push(Object.assign({}, quotes[i]));
+
+    return returnArr;
+}
+
 const updateQuote = (quoteId, newProps) => {
     let quote = findQuoteById(quoteId);
     if(!quote)
@@ -502,6 +510,7 @@ export default {
     findQuoteById,
     getQuoteWithAllAttributes, 
     getRecentlyAddedQuotes,
+    getAllQuotes,
     getAllTitlesAndAuthors,
     updateQuote,
     deleteQuote

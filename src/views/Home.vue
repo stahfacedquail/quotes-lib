@@ -6,7 +6,7 @@
           <ion-button @click="openMenu">
             <ion-icon :icon="menuOutline"></ion-icon>
           </ion-button>
-          <ion-title> Home </ion-title>
+          <ion-title> QuotePad </ion-title>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -25,14 +25,21 @@
             <QuoteCard
               :quote="quote"
               :index="idx"
-              @updateFavourite="updateFavourite"
-              @deleteQuote="deleteQuote"
+              @update-favourite="updateFavourite"
+              @delete-quote="deleteQuote"
             />
         </swiper-slide>
       </swiper>
 
       <ion-list>
-        <TitleItem v-for="(obj, idx) in titles" :key="idx" :title="obj.title" :authors="obj.authors" />
+        <TitleItem
+          v-for="(obj, idx) in titles"
+          :key="idx"
+          :title="obj.title"
+          :authors="obj.authors"
+
+          :href="'/quotes/title/' + obj.title.id"
+        />
       </ion-list>
     </ion-content>
   </ion-page>

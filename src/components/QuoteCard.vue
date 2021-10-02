@@ -4,11 +4,11 @@
             {{ quote.text }}
         </ion-card-content>
         <ion-card-content style="border-top:1px solid gray; padding:0px; margin-top:13px;">
-        <ion-button fill="clear" @click="updateFavourite">
+        <ion-button fill="clear" @click="$emit('update-favourite', quote, index);">
             <ion-icon v-if="quote.is_favourite" :icon="heart"></ion-icon>
             <ion-icon v-else :icon="heartOutline"></ion-icon>
         </ion-button>
-        <ion-button fill="clear" @click="deleteQuote">
+        <ion-button fill="clear" @click="$emit('delete-quote', quote.id)">
             <ion-icon :icon="trashOutline"></ion-icon>
         </ion-button>
         </ion-card-content>
@@ -39,16 +39,8 @@ export default defineComponent({
       trashOutline
     };
   },
-  methods: {
-      updateFavourite() {
-          this.$emit("updateFavourite", this.quote, this.index);
-      },
-      deleteQuote() {
-          this.$emit("deleteQuote", this.quote.id)
-      }
-  },
   emits: [
-      "updateFavourite", "deleteQuote"
+      "update-favourite", "delete-quote"
   ]
 });
 </script>

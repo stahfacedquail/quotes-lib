@@ -14,24 +14,26 @@
     </ion-header>
     
     <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Add quote</ion-title>
-        </ion-toolbar>
-      </ion-header>
-    
       <div id="container">
-          <ion-textarea placeholder="Write the quote here..." style="text-align:left;border:solid gray 1px;margin:3px;"></ion-textarea>
+        <QuoteCard
+          v-for="(quote, idx) in allQuotes"
+          :key="idx"
+          :quote="quote"
+          :index="idx" 
+          @update-favourite="updateFavourite"
+          @delete-quote="deleteQuote"
+        />
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script>
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonIcon, IonButton, IonButtons, IonTextarea } from '@ionic/vue';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonIcon, IonButton, IonButtons } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import{ chevronBackOutline } from "ionicons/icons";
-//import db from '../db/mockDb.js';
+import db from '../db/mockDb.js';
+import QuoteCard from "../components/QuoteCard.vue";
 
 export default defineComponent({
   name: 'AllQuotes',
@@ -44,23 +46,36 @@ export default defineComponent({
     IonIcon,
     IonButton,
     IonButtons,
-    IonTextarea
+    QuoteCard
   },
 
   data() {
     return {
-      
+      allQuotes: db.getAllQuotes()
     };
+  },
+
+  methods: {
+    updateFavourite(quote, idx) {
+      this.allQuotes[idx] = db.updateQuote(
+        quote.id,
+        { is_favourite: !quote.is_favourite  }
+      );
+    },
+
+    deleteQuote(quoteId) {
+      let successDelete = db.deleteQuote(quoteId);
+
+      if (successDelete) {
+        this.allQuotes = db.getAllQuotes();
+      }
+    }
   },
 
   setup() {
     return {
       chevronBackOutline
     };
-  },
-
-  methods: {
- 
   }
 });
 </script>
