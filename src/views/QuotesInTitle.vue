@@ -34,7 +34,6 @@ import { defineComponent } from 'vue';
 import{ chevronBackOutline } from "ionicons/icons";
 import db from '../db/mockDb.js';
 import QuoteCard from "../components/QuoteCard.vue";
-import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'QuotesInTitle',
@@ -52,8 +51,9 @@ export default defineComponent({
 
   data() {
     return {
-      quotes: db.getQuotesInTitle(this.id),
-      title: db.findTitleById(this.id)
+        id: this.$route.params.id,
+        quotes: db.getQuotesInTitle(this.id),
+        title: db.findTitleById(this.id)
     };
   },
 
@@ -75,10 +75,7 @@ export default defineComponent({
   },
 
   setup() {
-    console.log("Setup");
-    let route = useRoute();
-    let { id } = route.params;
-    return { id, chevronBackOutline };
+    return { chevronBackOutline };
   }
 });
 </script>
