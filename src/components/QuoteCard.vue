@@ -55,6 +55,7 @@ export default defineComponent({
 
 <style scoped>
     .quoteText {
+        height: 118px;
         display: -webkit-box;
         max-width: 100%;
         -webkit-line-clamp: 5;

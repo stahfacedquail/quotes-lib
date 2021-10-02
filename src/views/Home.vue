@@ -18,14 +18,18 @@
         <ion-icon :icon="addOutline"></ion-icon> Add new quote
       </ion-button>
 
-        <QuoteCard
-          v-for="(quote, idx) in recentQuotes"
-          :key="quote.id"
-          :quote="quote"
-          :index="idx"
-          @updateFavourite="updateFavourite"
-          @deleteQuote="deleteQuote"
-        />
+      <swiper :slidesPerView="'auto'" :spaceBetween="30" :pagination='{ "clickable": true }' >
+        <swiper-slide class="swiper-slide"
+          v-for="(quote,idx) in recentQuotes"
+          :key="idx">
+            <QuoteCard
+              :quote="quote"
+              :index="idx"
+              @updateFavourite="updateFavourite"
+              @deleteQuote="deleteQuote"
+            />
+        </swiper-slide>
+      </swiper>
     </ion-content>
   </ion-page>
 </template>
@@ -48,6 +52,13 @@ import QuoteCard from "../components/QuoteCard.vue";
 import { addOutline, menuOutline } from "ionicons/icons";
 import db from "../db/mockDb.js";
 
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/swiper-bundle.min.css';
+import SwiperCore, {
+  Pagination
+} from 'swiper';
+SwiperCore.use([Pagination]);
+
 export default defineComponent({
   name: "Home",
   components: {
@@ -60,7 +71,9 @@ export default defineComponent({
     IonButton,
     IonButtons,
     Menu,
-    QuoteCard
+    QuoteCard,
+    Swiper,
+    SwiperSlide
   },
 
   data() {
@@ -130,5 +143,9 @@ ion-content {
   -webkit-box-orient: vertical;
   overflow: hidden;
   padding-bottom: 0px; /* withouth this, one more line appears after the clamp */
+}
+
+.swiper-slide {
+  width: 60%;
 }
 </style>
