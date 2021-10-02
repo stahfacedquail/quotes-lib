@@ -24,6 +24,7 @@
           :quote="quote"
           :index="idx"
           @updateFavourite="updateFavourite"
+          @deleteQuote="deleteQuote"
         />
     </ion-content>
   </ion-page>
@@ -84,7 +85,6 @@ export default defineComponent({
     },
 
     deleteQuote(quoteId) {
-      //currently, this is being used for Recently Added
       let successDelete = db.deleteQuote(quoteId);
 
       if (successDelete) {
@@ -95,9 +95,7 @@ export default defineComponent({
     openMenu() {
       menuController.open("first");
     },
-  },
-
-  emits: ["updateFavouriteComplete"],
+  }
 });
 </script>
 

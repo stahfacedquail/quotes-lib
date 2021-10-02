@@ -8,8 +8,7 @@
             <ion-icon v-if="quote.is_favourite" :icon="heart"></ion-icon>
             <ion-icon v-else :icon="heartOutline"></ion-icon>
         </ion-button>
-        <ion-button fill="clear">
-            <!-- @click="deleteQuote(quote.id)" -->
+        <ion-button fill="clear" @click="deleteQuote">
             <ion-icon :icon="trashOutline"></ion-icon>
         </ion-button>
         </ion-card-content>
@@ -43,10 +42,13 @@ export default defineComponent({
   methods: {
       updateFavourite() {
           this.$emit("updateFavourite", this.quote, this.index);
+      },
+      deleteQuote() {
+          this.$emit("deleteQuote", this.quote.id)
       }
   },
   emits: [
-      "updateFavourite"
+      "updateFavourite", "deleteQuote"
   ]
 });
 </script>
@@ -58,6 +60,6 @@ export default defineComponent({
         -webkit-line-clamp: 5;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        padding-bottom: 0px; /* withouth this, one more line appears after the clamp */
+        padding-bottom: 0px; /* without this, one more line appears after the clamp */
     }
 </style>
