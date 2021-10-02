@@ -33,6 +33,7 @@ let authors = [
 
 let title_authors = [
 	{   title_id: 1,    author_id: 1    },
+    {   title_id: 1,    author_id: 2    },
 	{   title_id: 2,    author_id: 2    },
 	{   title_id: 3,    author_id: 3    },
     {   title_id: 4,    author_id: 4    },
@@ -472,10 +473,20 @@ const updateQuote = (quoteId, newProps) => {
     return quote;
 }
 
+const getAllTitlesAndAuthors = () => {
+    let titlesAndAuthors = [];
+
+    for(let i = 0; i < titles.length; i++)
+        titlesAndAuthors.push(joinTitleWithAuthors(titles[i].id));
+
+    return titlesAndAuthors;
+}
+
 export default {
     findQuoteById,
     getQuoteWithAllAttributes, 
     getRecentlyAddedQuotes,
+    getAllTitlesAndAuthors,
     updateQuote,
     deleteQuote
 };
