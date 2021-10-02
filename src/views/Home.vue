@@ -38,7 +38,7 @@
           :title="obj.title"
           :authors="obj.authors"
 
-          :router-link="'/quotes/title/' + obj.title.id"
+          :href="'/quotes/title/' + obj.title.id"
         />
       </ion-list>
     </ion-content>
