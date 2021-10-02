@@ -32,14 +32,7 @@
       </swiper>
 
       <ion-list>
-        <ion-item v-for="(obj, idx) in titles" :key="idx">
-          <ion-label>
-            <h2>{{ obj.title.name }}</h2>
-            <p class="author" v-for="(author, idx) in obj.authors" :key="idx">
-              {{ author.name }}
-            </p>
-          </ion-label>
-        </ion-item>
+        <TitleItem v-for="(obj, idx) in titles" :key="idx" :title="obj.title" :authors="obj.authors" />
       </ion-list>
     </ion-content>
   </ion-page>
@@ -56,13 +49,12 @@ import {
   IonButton,
   IonButtons,
   menuController,
-  IonList,
-  IonItem,
-  IonLabel
+  IonList
 } from "@ionic/vue";
 import { defineComponent } from "vue";
 import Menu from "../components/Menu.vue";
 import QuoteCard from "../components/QuoteCard.vue";
+import TitleItem from "../components/TitleItem.vue";
 import { addOutline, menuOutline } from "ionicons/icons";
 import db from "../db/mockDb.js";
 
@@ -88,9 +80,8 @@ export default defineComponent({
     QuoteCard,
     Swiper,
     SwiperSlide,
-    IonItem,
     IonList,
-    IonLabel
+    TitleItem
   },
 
   data() {
@@ -165,10 +156,5 @@ ion-content {
 
 .swiper-slide {
   width: 60%;
-}
-
-.author {
-  font-size: 12px !important;
-  line-height: 18px !important;
 }
 </style>
