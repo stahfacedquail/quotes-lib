@@ -381,7 +381,7 @@ function joinQuoteWithTags(quoteId) {
     return null;
 }
 
-function joinTitleWithType(titleId) {
+/* function joinTitleWithType(titleId) {
     let title = findTitleById(titleId);
 
     if(title) {
@@ -393,7 +393,7 @@ function joinTitleWithType(titleId) {
     }
 
     return null;
-}
+} */
 
 function joinTitleWithAuthors(titleId) {
     let title = findTitleById(titleId);
