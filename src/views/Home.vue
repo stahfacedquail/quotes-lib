@@ -46,7 +46,6 @@ import Menu from "../components/Menu.vue";
 import QuoteCard from "../components/QuoteCard.vue";
 import { addOutline, menuOutline } from "ionicons/icons";
 import db from "../db/mockDb.js";
-//import app from "../main.js";
 
 export default defineComponent({
   name: "Home",
@@ -60,7 +59,7 @@ export default defineComponent({
     IonButton,
     IonButtons,
     Menu,
-    QuoteCard,
+    QuoteCard
   },
 
   data() {

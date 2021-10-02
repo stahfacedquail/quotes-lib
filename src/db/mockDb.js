@@ -277,11 +277,11 @@ const findAuthorById = authorId => {
     return findElementById("author", authorId);
 }
 
-function findTitleTypeById(typeId) {
+const findTitleTypeById = typeId => {
     return findElementById("type", typeId);
 }
 
-function deleteQuote(quoteId) {
+const deleteQuote= quoteId => {
     let found = false;
     let deleteObj;
 
@@ -381,7 +381,7 @@ const joinQuoteWithTags = quoteId => {
     return null;
 }
 
-/* function joinTitleWithType(titleId) {
+/* const joinTitleWithType = titleId => {
     let title = findTitleById(titleId);
 
     if(title) {
@@ -395,7 +395,7 @@ const joinQuoteWithTags = quoteId => {
     return null;
 } */
 
-function joinTitleWithAuthors(titleId) {
+const joinTitleWithAuthors = titleId => {
     let title = findTitleById(titleId);
 
     if(title) {
