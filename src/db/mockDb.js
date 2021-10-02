@@ -1,21 +1,45 @@
 const NUM_RECENT_QUOTES = 3;
 
 let titles = [
-	{   id: 1,  name: "The New Apartheid"   },
-	{   id: 2,  name: "Girl, Woman, Other"  },
-	{   id: 3,  name: "Homegoing"   }
+	{   id: 1,  name: "The New Apartheid",  type_id: 1   },
+	{   id: 2,  name: "Girl, Woman, Other", type_id: 1  },
+	{   id: 3,  name: "Homegoing",  type_id: 1   },
+    {   id: 4,  name: "Nervous Conditions", type_id: 1  },
+    {   id: 5,  name: "Slavoj Zizek on #MeToo movement. How to Watch the News, episode 02", type_id: 2, url: "https://www.youtube.com/watch?v=ai_UAPaoEW4"  },
+    {   id: 6,  name: "Half of a Yellow Sun",   type_id: 1    },
+    {   id: 7,  name: "Men hating women",   type_id: 4, url: "https://www.gq-magazine.co.uk/article/men-hating-women"  },
+    {   id: 8,  name: "Talking to white people about race", type_id: 1  },
+    {   id: 9,  name: "Sing!",  type_id: 5  }
 ];
+
+let title_types = [
+    {   id: 1,  value: "book"   },
+    {   id: 2,  value: "video"  },
+    {   id: 3,  value: "song"   },
+    {   id: 4,  value: "article"    },
+    {   id: 5,  value: "movie"  }
+]
 
 let authors = [
 	{   id: 1,  name: "Sizwe Mpofu-Walsh"   },
 	{   id: 2,  name: "Bernardine Evaristo" },
-	{   id: 3,  name: "Yaa Gyasi"   }
+	{   id: 3,  name: "Yaa Gyasi"   },
+    {   id: 4,  name: "Tsitsi Dangarembga"  },
+    {   id: 5,  name: "Slavoj Zizek"    },
+    {   id: 6,  name: "Chimamanda Ngozi Adichie" },
+    {   id: 7,  name: "George Chesterton"   },
+    {   id: 8,  name: "Reno Eddo-Lodge" }
 ];
 
 let title_authors = [
 	{   title_id: 1,    author_id: 1    },
 	{   title_id: 2,    author_id: 2    },
-	{   title_id: 3,    author_id: 3    }
+	{   title_id: 3,    author_id: 3    },
+    {   title_id: 4,    author_id: 4    },
+    {   title_id: 5,    author_id: 5    },
+    {   title_id: 6,    author_id: 6    },
+    {   title_id: 7,    author_id: 7    },
+    {   title_id: 8,    author_id: 8    }
 ];
 
 let quotes = [
@@ -73,7 +97,87 @@ let quotes = [
 		title_id: 3,
 		is_favourite: false,
 		date_added: new Date("2021-07-09")
-	}
+	},
+
+    {
+        id: 8,
+        text: "... but later I realised that she really eid not mind carrying Nhamo's luggage if there wasn't too much of it.  She was a sweet child, the type that will make a sweet, sad wife.",
+        title_id: 4,
+        is_favourite: false,
+        date_added: new Date("2019-08-04")
+    },
+
+    {
+        id: 9,
+        text: "... I have seen enough to know that blame does not come in neatly packaged parcels.",
+        title_id: 4,
+        is_favourite: false,
+        date_added: new Date("2019-08-04")
+    },
+
+    {
+        id: 10,
+        text: "... this excessive nature -- 'you say one wrong word, you are immediately excluded' and so on -- is a mask of the fact that #MeToo, the way it predominates today, it doesn't touch the real social problems: poverty, daily exploitation, and so on and so on.  And that's for me generally the problem with political correctness: it deals with polite forms of talking, acting, and so on and so on.  It doesn't approach the true economic roots of this crisis.",
+        title_id: 5,
+        is_favourite: false,
+        date_added: new Date("2019-01-17")
+    },
+
+    {
+        id: 11,
+        text: "... it's wrong of you to think that love leaves room for nothing else.",
+        title_id: 6,
+        is_favourite: false,
+        date_added: new Date("2018-10-03")
+    },
+
+    {
+        id: 12,
+        text: "The idea that masculinity is now toxic suggests we’ve only just noticed. For millennia, rigidity and repetition has been ingrained into male and female identities, but behind these social structures may be something more primal. An unholy stew of psychology and the culture that springs from it has made men what they are. Toxic masculinity is a tautology.",
+        title_id: 7,
+        is_favourite: false,
+        date_added: new Date("2018-11-07")
+    },
+
+    {
+        id: 13,
+        text: "Masculinity is not in a state of crisis. Masculinity is a crisis.",
+        title_id: 7,
+        is_favourite: false,
+        date_added: new Date("2018-11-07")
+    },
+
+    {
+        id: 14,
+        text: "Masculinity and the misogyny it allows is so embedded men rarely recognise it. It affects our physical and mental health, and it builds walls few of us even acknowledge, let alone attempt to peer beyond. \"The LGBTQ movement is having the argument for all of us,\" says Jukes. \"In essence, they are fighting this battle for everyone, gnawing away at the edges of these definitions of femininity and masculinity and we will all be liberated by their success.\"",
+        title_id: 7,
+        is_favourite: false,
+        date_added: new Date("2018-11-07")
+    },
+
+    {
+        id: 15,
+        text: "Hendon Police College wanted John and his colleagues to develop a course about multiculturalism to teach to police cadets in training... But he immediately ran into problems.  The first red flag was that the college wanted to put an emphasis on multiculturalism rather than anti-racism.  'I was not very happy, as a black sociologist,' he explained.  'I wanted an anti-racist approach to it.  Because the problem is not a black problem.  It's not my culture, not my religion that is the problem.  It is the racism of the white institutions.'  To go about proving that his anti-racist perspective would be more useful, he had to do a bit of research... He had to demonstrate that there was an already existing racist bias in the college's new recruits.  'As part of my research, I might have found that none of the cadets had a racist bias, maybe just a couple, so it's not a problem, so I'll do the multicultural course.'  His research saw him ask trainee police cadets at the college to write anonymous essay on the topic of 'blacks' in Britain.  The responses were shocking.",
+        title_id: 8,
+        is_favourite: false,
+        date_added: new Date("2019-02-11")
+    },
+
+    {
+        id: 16,
+        text: "Go to sleep and dream big dreams.",
+        title_id: 9,
+        is_favourite: false,
+        date_added: new Date("2020-12-15")
+    },
+
+    {
+        id: 17,
+        text: "Get a good night's sleep and do a great day's work.",
+        title_id: 9,
+        is_favourite: false,
+        date_added: new Date("2020-12-15")
+    }
 ];
 
 let tags = [
@@ -81,11 +185,17 @@ let tags = [
 	{   id: 2,  value: "privilege"  },
 	{   id: 3,  value: "identity"   },
 	{   id: 4,  value: "beauty" },
-	{   id: 5,  value: "trasngender"    },
+	{   id: 5,  value: "transgender"    },
 	{   id: 6,  value: "love"   },
 	{   id: 7,  value: "segregation"    },
 	{   id: 8,  value: "access" },
-	{   id: 9,  value: "inequality" }
+	{   id: 9,  value: "inequality" },
+    {   id: 10, value: "political correctness"  },
+    {   id: 11, value: "gender" },
+    {   id: 12, value: "masculinity"    },
+    {   id: 13, value: "LGBTQIA+"   },
+    {   id: 14, value: "inspiration"    },
+    {   id: 15, value: "sleep"  }
 ];
 
 let quote_tags = [
@@ -103,7 +213,23 @@ let quote_tags = [
 	{   quote_id: 7,    tag_id: 1   },
 	{   quote_id: 7,    tag_id: 7   },
 	{   quote_id: 7,    tag_id: 8   },
-	{   quote_id: 7,    tag_id: 9   }
+	{   quote_id: 7,    tag_id: 9   },
+    {   quote_id: 8,    tag_id: 3   },
+    {   quote_id: 8,    tag_id: 6   },
+    {   quote_id: 10,   tag_id: 9   },
+    {   quote_id: 10,   tag_id: 10   },
+    {   quote_id: 11,   tag_id: 6   },
+    {   quote_id: 12,   tag_id: 11   },
+    {   quote_id: 12,   tag_id: 12  },
+    {   quote_id: 13,   tag_id: 11   },
+    {   quote_id: 13,   tag_id: 12   },
+    {   quote_id: 14,   tag_id: 11   },
+    {   quote_id: 14,   tag_id: 12   },
+    {   quote_id: 14,   tag_id: 13   },
+    {   quote_id: 15,   tag_id: 1   },
+    {   quote_id: 16,   tag_id: 14  },
+    {   quote_id: 17,   tag_id: 14  },
+    {   quote_id: 17,   tag_id: 15  }
 ];
 
 function findElementById(elementType, elementId) {
@@ -118,6 +244,7 @@ function findElementById(elementType, elementId) {
             break;
         case "tag": searchTable = tags;
             break;
+        case "type": searchTable = title_types;
     }
 
     let elem = {};
@@ -148,6 +275,10 @@ function findTitleById(titleId) {
 
 function findAuthorById(authorId) {
     return findElementById("author", authorId);
+}
+
+function findTitleTypeById(typeId) {
+    return findElementById("type", typeId);
 }
 
 function deleteQuote(quoteId) {
@@ -250,6 +381,20 @@ function joinQuoteWithTags(quoteId) {
     return null;
 }
 
+function joinTitleWithType(titleId) {
+    let title = findTitleById(titleId);
+
+    if(title) {
+        let titleType = findTitleTypeById(title.type_id);
+        delete title.type_id;
+        title.type = titleType;
+        
+        return title;
+    }
+
+    return null;
+}
+
 function joinTitleWithAuthors(titleId) {
     let title = findTitleById(titleId);
 
@@ -278,6 +423,10 @@ function getQuoteWithAllAttributes(quoteId) {
 
     if(quoteAndTags) {
         let titleAndAuthors = joinTitleWithAuthors(quoteAndTags.quote.title_id);
+
+        let titleType = findTitleTypeById(quoteAndTags.quote.type_id);
+        delete quoteAndTags.quote.type_id;
+        quoteAndTags.quote.type = titleType;
 
         return {
             quote: quoteAndTags.quote,
