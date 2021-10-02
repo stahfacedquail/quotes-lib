@@ -11,20 +11,12 @@
       </ion-toolbar>
     </ion-header>
 
-    <Menu></Menu>
-    <ion-router-outlet id="menu-sibling" />
-
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Home</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
-      <div id="container">
-        <ion-button href="/add-quote">
-          <ion-icon :icon="addOutline"></ion-icon> Add new quote
-        </ion-button>
+    <Menu />
+  
+    <ion-content :fullscreen="true" id="container">    
+      <ion-button href="/add-quote">
+        <ion-icon :icon="addOutline"></ion-icon> Add new quote
+      </ion-button>
 
         <QuoteCard
           v-for="(quote, idx) in recentQuotes"
@@ -33,14 +25,6 @@
           :index="idx"
           @updateFavourite="updateFavourite"
         />
-
-        <!--<QuoteCard
-          :quote="recentQuotes"
-          :index="0"
-          v-model="recentQuotes.is_favourite"
-          @updateFavourite="updateFavourite"
-        />-->
-      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -55,7 +39,6 @@ import {
   IonIcon,
   IonButton,
   IonButtons,
-  IonRouterOutlet,
   menuController,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
@@ -76,7 +59,6 @@ export default defineComponent({
     IonIcon,
     IonButton,
     IonButtons,
-    IonRouterOutlet,
     Menu,
     QuoteCard,
   },
@@ -121,13 +103,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#container {
+ion-content {
   text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 10%;
+  --padding-top: 10%;
 }
 
 #container strong {
