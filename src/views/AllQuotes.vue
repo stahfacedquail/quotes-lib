@@ -3,7 +3,7 @@
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-buttons>
-            <ion-button href="/home">
+            <ion-button router-link="/home">
                 <ion-icon :icon="chevronBackOutline"></ion-icon>
             </ion-button>
             <ion-title>

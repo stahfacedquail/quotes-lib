@@ -465,7 +465,11 @@ const getFavouriteQuotes = () => {
     return getQuotes("favourite");
 }
 
-const getQuotes = (option) => {
+const getQuotesInTitle = titleId => {
+    return getQuotes("inTitle", titleId);
+}
+
+const getQuotes = (option, optionId) => {
     let origArr;
 
     switch(option) {
@@ -479,6 +483,9 @@ const getQuotes = (option) => {
             break;
         } case "favourite": {
             origArr = quotes.filter(quote => quote.is_favourite);
+            break;
+        } case "inTitle": {
+            origArr = quotes.filter(quote => quote.title_id == optionId)
         }
     }
 
@@ -524,10 +531,12 @@ const getAllTitlesAndAuthors = () => {
 
 export default {
     findQuoteById,
+    findTitleById,
     getQuoteWithAllAttributes, 
     getRecentlyAddedQuotes,
     getAllQuotes,
     getFavouriteQuotes,
+    getQuotesInTitle,
     getAllTitlesAndAuthors,
     updateQuote,
     deleteQuote
