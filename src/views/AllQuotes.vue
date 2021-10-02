@@ -64,9 +64,9 @@ export default defineComponent({
     },
 
     deleteQuote(quoteId) {
-      let successDelete = db.deleteQuote(quoteId);
+      let { success } = db.deleteQuote(quoteId);
 
-      if (successDelete) {
+      if(success) {
         this.allQuotes = db.getAllQuotes();
       }
     }

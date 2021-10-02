@@ -111,15 +111,15 @@ export default defineComponent({
         quote.id,
         { is_favourite: !quote.is_favourite  }
       );
-
-      console.log(this.recentQuotes[idx]);
     },
 
     deleteQuote(quoteId) {
-      let successDelete = db.deleteQuote(quoteId);
+      let { success, lastQuoteInTitle } = db.deleteQuote(quoteId);
 
-      if (successDelete) {
+      if(success) {
         this.recentQuotes = db.getRecentlyAddedQuotes();
+        if(lastQuoteInTitle)
+          this.titles = db.getAllTitlesAndAuthors();
       }
     },
 
@@ -130,7 +130,10 @@ export default defineComponent({
     closeMenu() {
       menuController.close("first");
     }
-  }
+  },
+  emits: [
+    "last-quote-in-title"
+  ]
 });
 </script>
 

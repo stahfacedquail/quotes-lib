@@ -293,6 +293,10 @@ const findTitleTypeById = (typeId, returnTrueObj) => {
 const deleteQuote= quoteId => {
     let found = false;
     let deleteObj;
+    let returnObj = {
+        success: false,
+        lastQuoteInTitle: false
+    }
 
     for(let i = 0; i < quotes.length && !found; i++) {
         if(quotes[i].id == quoteId) {
@@ -320,6 +324,8 @@ const deleteQuote= quoteId => {
         }
 
         if(quotesInTitle == 0) {
+            returnObj.lastQuoteInTitle = true;
+
             let _authors = [];
 
             for(let i = 0; i < title_authors.length; i++) {
@@ -337,9 +343,7 @@ const deleteQuote= quoteId => {
             }
 
             //if last quote by author(s), delete author(s)
-            let allAuthors = title_authors.map((obj) => {
-                return obj.author_id;
-            });
+            let allAuthors = title_authors.map(obj => obj.author_id);
 
             for(let i = 0; i < _authors.length; i++) {
                 if(! isIn(_authors[i].author_id, allAuthors)) {
@@ -353,9 +357,11 @@ const deleteQuote= quoteId => {
             }
         }
 
-        return true;
+        returnObj.success = true;
+        
+        return returnObj;
     } else
-        return false;
+        return returnObj;
 }
 
 const isIn = (item, arr) => { //helper function to determine whether a given item appears in an array.  Works best for primitive data types.
