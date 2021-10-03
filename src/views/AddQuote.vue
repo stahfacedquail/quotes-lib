@@ -4,7 +4,7 @@
     
     <ion-content :fullscreen="true">    
       <div id="container">
-          <ion-textarea placeholder="Write the quote here..." style="text-align:left;border:solid gray 1px;margin:3px;"></ion-textarea>
+          <ion-textarea placeholder="Write the quote here..." class="inputQuote"></ion-textarea>
       </div>
     </ion-content>
   </ion-page>
@@ -36,3 +36,11 @@ export default defineComponent({
   }
 });
 </script>
+
+<style scoped>
+/* .inputQuote {
+  text-align:left;
+  border:solid gray 1px;
+  margin:3px;
+} */
+</style>
