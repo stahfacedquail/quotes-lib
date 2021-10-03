@@ -1,17 +1,6 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons>
-            <ion-button router-link="/home">
-                <ion-icon :icon="chevronBackOutline"></ion-icon>
-            </ion-button>
-            <ion-title>
-                {{ title.name }}
-            </ion-title>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
+    <AppHeader :title="title.name" />
     
     <ion-content :fullscreen="true">
       <div id="container">
@@ -29,25 +18,20 @@
 </template>
 
 <script>
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonIcon, IonButton, IonButtons } from '@ionic/vue';
+import { IonContent, IonPage } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import{ chevronBackOutline } from "ionicons/icons";
 import db from '../db/mockDb.js';
 import QuoteCard from "../components/QuoteCard.vue";
+import AppHeader from "../components/AppHeader.vue";
 import { useRoute } from "vue-router";
 
 export default defineComponent({
   name: 'QuotesInTitle',
   components: {
     IonContent,
-    IonHeader,
     IonPage,
-    IonTitle,
-    IonToolbar,
-    IonIcon,
-    IonButton,
-    IonButtons,
-    QuoteCard
+    QuoteCard,
+    AppHeader
   },
 
   data() {
@@ -79,36 +63,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const { id } = route.params;
-    return { id, chevronBackOutline };
+    return { id };
   }
 });
 </script>
-
-<style scoped>
-#container {
-  text-align: center;
-  
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 10%;
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  
-  color: #8c8c8c;
-  
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
-}
-</style>

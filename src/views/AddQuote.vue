@@ -1,25 +1,8 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-buttons>
-            <ion-button href="/home">
-                <ion-icon :icon="chevronBackOutline"></ion-icon>
-            </ion-button>
-            <ion-title>
-                Add quote
-            </ion-title>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
+    <AppHeader :title="'Add quote'" />
     
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Add quote</ion-title>
-        </ion-toolbar>
-      </ion-header>
-    
+    <ion-content :fullscreen="true">    
       <div id="container">
           <ion-textarea placeholder="Write the quote here..." style="text-align:left;border:solid gray 1px;margin:3px;"></ion-textarea>
       </div>
@@ -28,23 +11,18 @@
 </template>
 
 <script>
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonIcon, IonButton, IonButtons, IonTextarea } from '@ionic/vue';
+import { IonContent, IonPage, IonTextarea } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import{ chevronBackOutline } from "ionicons/icons";
+import AppHeader from "../components/AppHeader.vue";
 //import db from '../db/mockDb.js';
 
 export default defineComponent({
   name: 'AddQuote',
   components: {
     IonContent,
-    IonHeader,
     IonPage,
-    IonTitle,
-    IonToolbar,
-    IonIcon,
-    IonButton,
-    IonButtons,
-    IonTextarea
+    IonTextarea,
+    AppHeader
   },
 
   data() {
@@ -53,43 +31,8 @@ export default defineComponent({
     };
   },
 
-  setup() {
-    return {
-      chevronBackOutline
-    };
-  },
-
   methods: {
  
   }
 });
 </script>
-
-<style scoped>
-#container {
-  text-align: center;
-  
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 10%;
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  
-  color: #8c8c8c;
-  
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
-}
-</style>
