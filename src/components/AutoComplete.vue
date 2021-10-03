@@ -3,7 +3,7 @@
         <ion-label position="stacked">{{ name }}</ion-label>
         <ion-input v-model="searchValue" @ionChange="updateSearchResults" @ionFocus="updateSearchResults" @ionBlur="searchResults = []" />
     </ion-item>
-    <ion-list id="results" v-show="searchValue.length > 0">
+    <ion-list v-show="searchValue.length > 0">
         <!--  @mousedown.prevent prevents blur event so that click event can happen first, so that update
                 of title box can happen before input area loses focus -->
         <ion-item v-for="(result, idx) in searchResults" :key="idx" button @mousedown.prevent @click="updateSearchField(result)">
