@@ -463,6 +463,18 @@ const sortQuotesByDate = (quoteA, quoteB) => { //sort from most recent to oldest
         return 0;
 }
 
+const sortAlphabetically = (elemA, elemB) => {
+    let elemAFirstLetter = elemA[0];
+    let elemBFirstLetter = elemB[0];
+
+    if(elemAFirstLetter < elemBFirstLetter)
+        return -1;
+    if(elemAFirstLetter > elemBFirstLetter)
+        return 1;
+
+    return 0;
+}
+
 const getRecentlyAddedQuotes = () => {
     return getQuotes("recent");
 }
@@ -526,19 +538,23 @@ const getAllTitlesAndAuthors = () => {
     for(let i = 0; i < titles.length; i++)
         titlesAndAuthors.push(joinTitleWithAuthors(titles[i].id));
 
-    titlesAndAuthors.sort((a, b) => {
-        let title1FirstLetter = a.title.name[0].toUpperCase();
-        let title2FirstLetter = b.title.name[0].toUpperCase();
-
-        if(title1FirstLetter > title2FirstLetter)
+    titlesAndAuthors.sort((objA, objB) => {
+        if(objA.title.name[0] > objB.title.name[0])
             return 1;
-        else if(title1FirstLetter < title2FirstLetter)
+        if(objA.title.name[0] < objB.title.name[0])
             return -1;
-        
+
         return 0;
-    })
+    });
 
     return titlesAndAuthors;
+}
+
+const getAllTitles = () => {
+    let titleNames = titles.map(title => title.name);
+    titleNames.sort(sortAlphabetically);
+
+    return titleNames;
 }
 
 export default {
@@ -550,6 +566,7 @@ export default {
     getFavouriteQuotes,
     getQuotesInTitle,
     getAllTitlesAndAuthors,
+    getAllTitles,
     updateQuote,
     deleteQuote
 };
