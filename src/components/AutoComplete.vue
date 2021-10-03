@@ -26,7 +26,7 @@ export default defineComponent({
     },
     props: {
         name: { type: String, required: true }, //name of the field
-        allValues: { type: Array, required: true } //all possible values (currently) for this field
+        data: { type: Array, required: true, default: () => [] } //all possible values (currently) for this field
     },
     data() {
         return {
@@ -35,7 +35,7 @@ export default defineComponent({
         };
     }, methods: {
         updateSearchResults() {
-            this.searchResults = this.allValues.filter(value => value.toLowerCase().includes(this.searchValue.toLowerCase()));
+            this.searchResults = this.data.filter(value => value.toLowerCase().includes(this.searchValue.toLowerCase()));
       
             /*  Once user chooses a match, Vue will try to search again and create another list with search results
                 This check clears the list if the only result matches what is in the search box */

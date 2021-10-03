@@ -13,11 +13,11 @@ let titles = [
 ];
 
 let title_types = [
-    {   id: 1,  value: "book"   },
-    {   id: 2,  value: "video"  },
-    {   id: 3,  value: "song"   },
-    {   id: 4,  value: "article"    },
-    {   id: 5,  value: "movie"  }
+    {   id: 1,  value: "Book"   },
+    {   id: 2,  value: "Video"  },
+    {   id: 3,  value: "Song"   },
+    {   id: 4,  value: "Article"    },
+    {   id: 5,  value: "Movie"  }
 ]
 
 let authors = [
@@ -557,6 +557,22 @@ const getAllTitles = () => {
     return titleNames;
 }
 
+const getAllAuthors = () => {
+    let authorNames = authors.map(author => author.name);
+    authorNames.sort(sortAlphabetically);
+
+    return authorNames;
+}
+
+const getAllTitleTypes = () => {
+    let titleTypes = [];
+
+    for(let i = 0; i < title_types.length; i++)
+        titleTypes.push(Object.assign({}, title_types[i]));
+
+    return titleTypes;
+}
+
 export default {
     findQuoteById,
     findTitleById,
@@ -567,6 +583,8 @@ export default {
     getQuotesInTitle,
     getAllTitlesAndAuthors,
     getAllTitles,
+    getAllAuthors,
+    getAllTitleTypes,
     updateQuote,
     deleteQuote
 };
