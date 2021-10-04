@@ -49,18 +49,26 @@ export default defineComponent({
         return {
             tagValue: "",
             tagList: [],
-            tagSearchList: []
+            tagSearchList: [],
+            tagListLowerCase: []
         };
     }, methods: {
         updateTagSearchList() {
             this.tagSearchList = this.data.filter(value => value.toLowerCase().includes(this.tagValue.toLowerCase()));
         },
         updateTagList(result) {
+            if(this.tagListLowerCase.includes(result.toLowerCase())) {
+                this.tagValue = "";
+                return;
+            }
+            
             this.tagList.push(result);
+            this.tagListLowerCase.push(result.toLowerCase());
             this.tagValue = "";
         },
         removeTag(i) {
             this.tagList.splice(i, 1);
+            this.tagListLowerCase.splice(i, 1);
         }
     }, setup() {
         return {
