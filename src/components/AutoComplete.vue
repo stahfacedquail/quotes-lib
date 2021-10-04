@@ -7,7 +7,7 @@
         <!--  @mousedown.prevent prevents blur event so that click event can happen first, so that update
                 of title box can happen before input area loses focus -->
         <ion-item v-for="(result, idx) in searchResults" :key="idx" button @mousedown.prevent @click="updateSearchField(result)">
-            <ion-label>{{ result }}</ion-label>
+            <ion-label>{{ result.name }}</ion-label>
         </ion-item>
     </ion-list>
 </template>
@@ -35,15 +35,15 @@ export default defineComponent({
         };
     }, methods: {
         updateSearchResults() {
-            this.searchResults = this.data.filter(value => value.toLowerCase().includes(this.searchValue.toLowerCase()));
+            this.searchResults = this.data.filter(elem => elem.name.toLowerCase().includes(this.searchValue.toLowerCase()));
       
             /*  Once user chooses a match, Vue will try to search again and create another list with search results
                 This check clears the list if the only result matches what is in the search box */
-            if(this.searchResults.length == 1 && this.searchResults[0] == this.searchValue)
+            if(this.searchResults.length == 1 && this.searchResults[0].name == this.searchValue)
                 this.searchResults = [];
         },
         updateSearchField(result) {
-            this.searchValue = result;
+            this.searchValue = result.name;
             this.searchResults = []; //clear search results after match selected
         }
     }

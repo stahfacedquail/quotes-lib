@@ -464,8 +464,8 @@ const sortQuotesByDate = (quoteA, quoteB) => { //sort from most recent to oldest
 }
 
 const sortAlphabetically = (elemA, elemB) => {
-    let elemAFirstLetter = elemA[0];
-    let elemBFirstLetter = elemB[0];
+    let elemAFirstLetter = elemA.name[0];
+    let elemBFirstLetter = elemB.name[0];
 
     if(elemAFirstLetter < elemBFirstLetter)
         return -1;
@@ -551,17 +551,17 @@ const getAllTitlesAndAuthors = () => {
 }
 
 const getAllTitles = () => {
-    let titleNames = titles.map(title => title.name);
-    titleNames.sort(sortAlphabetically);
+    let _titles = titles.map(title => Object.assign({}, title));
+    _titles.sort(sortAlphabetically);
 
-    return titleNames;
+    return _titles;
 }
 
 const getAllAuthors = () => {
-    let authorNames = authors.map(author => author.name);
-    authorNames.sort(sortAlphabetically);
+    let _authors = authors.map(author => Object.assign({}, author));
+    _authors.sort(sortAlphabetically);
 
-    return authorNames;
+    return _authors;
 }
 
 const getAllTitleTypes = () => {
@@ -574,8 +574,12 @@ const getAllTitleTypes = () => {
 }
 
 const getAllTags = () => {
-    let _tags = tags.map(tag => tag.value);
-
+    let _tags = tags.map(function(tag) { //Why is arrow function not working here??
+        return {
+            "id": tag.id,
+            "name": tag.value
+        }
+    });
     _tags.sort(sortAlphabetically);
 
     return _tags;

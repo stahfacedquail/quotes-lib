@@ -10,7 +10,7 @@
           </ion-item>
 
           <AutoComplete name="Title" :data="titles" />
-          <AutoComplete name="Author" :data="authors" />
+          <AutoComplete name="Author" :data="authors" /> <!-- can't add multiple authors :O -->
 
           <ion-item>
             <ion-label position="stacked">Type</ion-label>
@@ -22,18 +22,23 @@
           </ion-item>
 
           <TagInput :data="tags" />
+
+          <ion-button>
+            <ion-icon :icon="addOutline"></ion-icon>&nbsp;&nbsp;Save quote
+          </ion-button>
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script>
-import { IonContent, IonPage, IonTextarea, IonLabel, IonItem, IonSelect, IonSelectOption } from '@ionic/vue';
+import { IonContent, IonPage, IonTextarea, IonLabel, IonItem, IonSelect, IonSelectOption, IonIcon, IonButton } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import AppHeader from "../components/AppHeader.vue";
 import AutoComplete from "../components/AutoComplete.vue";
 import TagInput from "../components/TagInput.vue";
 import db from '../db/mockDb.js';
+import { addOutline } from "ionicons/icons";
 
 export default defineComponent({
   name: 'AddQuote',
@@ -47,7 +52,9 @@ export default defineComponent({
     AutoComplete,
     IonSelect,
     IonSelectOption,
-    TagInput
+    TagInput,
+    IonIcon,
+    IonButton
   },
 
   data() {
@@ -60,8 +67,10 @@ export default defineComponent({
     };
   },
 
-  methods: {
-    
+  setup() {
+    return {
+      addOutline
+    };
   }
 });
 </script>
