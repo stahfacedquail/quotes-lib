@@ -8,7 +8,7 @@
             @ionFocus="updateTagSearchList"
             @ionBlur="tagSearchList = []"
             @keydown.enter="updateTagList(tagValue)"
-        />
+        /> <!-- keydown., as well? -->
     </ion-item>
     <ion-list v-show="tagValue.length > 0">
         <!--  @mousedown.prevent prevents blur event so that click event can happen first, so that update
