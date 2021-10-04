@@ -17,13 +17,20 @@
             <ion-label>{{ result }}</ion-label>
         </ion-item>
     </ion-list>
+    <ion-list>
+        <ion-chip v-for="(tag, idx) in tagList" :key="idx">
+            <ion-label>{{ tag }}</ion-label>
+            <ion-icon :icon="closeCircle" @click="removeTag(idx)" />
+        </ion-chip>
+    </ion-list>
 
     
 </template>
 
 <script>
 import { defineComponent } from 'vue';
-import { IonItem, IonLabel, IonInput, IonList } from "@ionic/vue";
+import { IonItem, IonLabel, IonInput, IonList, IonChip, IonIcon } from "@ionic/vue";
+import { closeCircle } from "ionicons/icons";
 
 export default defineComponent({
     name: "AutoComplete",
@@ -31,7 +38,9 @@ export default defineComponent({
         IonItem,
         IonLabel,
         IonInput,
-        IonList
+        IonList,
+        IonChip,
+        IonIcon
     },
     props: {
         data: { type: Array, required: true, default: () => [] } //all possible values (currently) for this field
@@ -45,17 +54,17 @@ export default defineComponent({
     }, methods: {
         updateTagSearchList() {
             this.tagSearchList = this.data.filter(value => value.toLowerCase().includes(this.tagValue.toLowerCase()));
-      
-            /*  Once user chooses a match, Vue will try to search again and create another list with search results
-                This check clears the list if the only result matches what is in the search box */
-            if(this.tagSearchList.length == 1 && this.tagSearchList[0] == this.tagValue)
-                this.tagSearchList = [];
         },
         updateTagList(result) {
             this.tagList.push(result);
             this.tagValue = "";
-            console.log(this.tagList);
-            //this.tagSearchList = []; //clear search results after match selected
+        },
+        removeTag(i) {
+            this.tagList.splice(i, 1);
+        }
+    }, setup() {
+        return {
+            closeCircle
         }
     }
 })
