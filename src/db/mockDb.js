@@ -573,6 +573,14 @@ const getAllTitleTypes = () => {
     return titleTypes;
 }
 
+const getAllTags = () => {
+    let _tags = tags.map(tag => tag.value);
+
+    _tags.sort(sortAlphabetically);
+
+    return _tags;
+}
+
 export default {
     findQuoteById,
     findTitleById,
@@ -585,6 +593,7 @@ export default {
     getAllTitles,
     getAllAuthors,
     getAllTitleTypes,
+    getAllTags,
     updateQuote,
     deleteQuote
 };

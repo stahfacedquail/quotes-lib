@@ -20,6 +20,8 @@
               </ion-select-option>
             </ion-select>
           </ion-item>
+
+          <TagInput :data="tags" />
       </div>
     </ion-content>
   </ion-page>
@@ -30,6 +32,7 @@ import { IonContent, IonPage, IonTextarea, IonLabel, IonItem, IonSelect, IonSele
 import { defineComponent } from 'vue';
 import AppHeader from "../components/AppHeader.vue";
 import AutoComplete from "../components/AutoComplete.vue";
+import TagInput from "../components/TagInput.vue";
 import db from '../db/mockDb.js';
 
 export default defineComponent({
@@ -43,7 +46,8 @@ export default defineComponent({
     IonItem,
     AutoComplete,
     IonSelect,
-    IonSelectOption
+    IonSelectOption,
+    TagInput
   },
 
   data() {
@@ -51,7 +55,8 @@ export default defineComponent({
       titles: db.getAllTitles(),
       authors: db.getAllAuthors(),
       chosenType: "",
-      types: db.getAllTitleTypes()
+      types: db.getAllTitleTypes(),
+      tags: db.getAllTags()
     };
   },
 
