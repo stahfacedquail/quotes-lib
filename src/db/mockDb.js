@@ -476,6 +476,7 @@ const sortAlphabetically = (elemA, elemB) => {
 }
 
 const getRecentlyAddedQuotes = () => {
+    console.log("RECENT");
     return getQuotes("recent");
 }
 
@@ -585,6 +586,92 @@ const getAllTags = () => {
     return _tags;
 }
 
+const createQuote = newObj => {
+    //create title, if necessary
+    if(newObj.quote.title_id == -1) {
+        let nextTitleId = titles[titles.length - 1].id + 1;
+        titles.push({
+            id: nextTitleId,
+            name: newObj.title.name,
+            type_id: newObj.title.type
+        });
+
+        newObj.quote.title_id = nextTitleId;
+    }
+
+    //create authors, if necessary
+    let newAuthors = newObj.authors.filter(author => author.id == -1);
+    let oldAuthors = newObj.authors.filter(author => author.id != -1);
+    let allAuthorIds = [];
+
+    let nextAuthorId = authors[authors.length - 1].id + 1;
+    for(let i = 0; i < newAuthors.length; i++) {
+        authors.push({
+            id: nextAuthorId,
+            name: newAuthors[i].name
+        });
+
+        allAuthorIds.push(nextAuthorId);
+        nextAuthorId++;
+    }
+
+    allAuthorIds.push(oldAuthors.map(author => author.id));
+
+    //create author_title relationships for new authors
+    for(let i = 0; i < newAuthors.length; i++) {
+        title_authors.push({
+            title_id: newObj.quote.title_id,
+            author_id: allAuthorIds[i]
+        });
+    }
+
+    //create quote object
+    let quote = {
+        id: quotes[quotes.length - 1].id + 1,
+        text: newObj.quote.text,
+        title_id: newObj.quote.title_id,
+        date_added: new Date(),
+        is_favourite: false
+    };
+
+    quotes.push(quote);
+
+    //create tags, if necessary
+    let newTags = newObj.tags.filter(tag => tag.id == -1);
+    let oldTags = newObj.tags.filter(tag => tag.id != -1);
+
+    let tagIds = [];
+    let nextTagId = tags[tags.length - 1].id + 1;
+
+    for(let i = 0; i < newTags.length; i++) {
+        tags.push({
+            id: nextTagId,
+            value: newTags[i].name
+        });
+
+        tagIds.push(nextTagId);
+        nextTagId++;
+    }
+
+    tagIds.push(oldTags.map(tag => tag.id));
+
+    //create quote tag associations
+    for(let i = 0; i < tagIds.length; i++)
+        quote_tags.push({
+            quote_id: quote.id,
+            tag_id: tagIds[i]
+        });
+
+    console.log(titles);
+    console.log(authors);
+    console.log(quotes);
+    console.log(tags);
+    console.log(title_types);
+    console.log(title_authors);
+    console.log(quote_tags);
+    console.log(getQuoteWithAllAttributes(quote.id));
+}
+
 export default {
     findQuoteById,
     findTitleById,
@@ -599,5 +686,6 @@ export default {
     getAllTitleTypes,
     getAllTags,
     updateQuote,
-    deleteQuote
+    deleteQuote,
+    createQuote
 };

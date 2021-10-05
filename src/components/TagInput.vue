@@ -78,16 +78,21 @@ export default defineComponent({
             this.tagList.push(res);
             this.tagListLowerCase.push(res.name.toLowerCase());
             this.tagValue = "";
+
+            this.$emit("value-updated", "Tags", this.tagList);
         },
         removeTag(i) {
             this.tagList.splice(i, 1);
             this.tagListLowerCase.splice(i, 1);
+            this.$emit("value-updated", "Tags", this.tagList);
         }
     }, setup() {
         return {
             closeCircle
         }
-    }
+    }, emits: [
+        "value-updated"
+    ]
 })
 </script>
 
