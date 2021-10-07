@@ -1,7 +1,7 @@
 <template>
    <ion-item>
         <ion-label>
-        <h2>{{ title.name }}</h2>
+        <h2>{{ title.value }}</h2>
         <p v-show="authors.length > 0" class="author">
             {{ authorsLine }}
         </p>
@@ -30,14 +30,14 @@ export default defineComponent({
         authorsLine() {
             switch(this.authors.length) {
                 case 0: return "";
-                case 1: return this.authors[0].name;
-                case 2: return this.authors[0].name + " & " + this.authors[1].name;
+                case 1: return this.authors[0].value;
+                case 2: return this.authors[0].value + " & " + this.authors[1].value;
                 default: {
                     let str = "";
                     let i = 0;
                     for(; i < this.authors.length - 2; i++)
-                        str += ( this.authors[i].name + ", " );
-                    str += ( this.authors[i].name + " & " + this.authors[i+1].name );
+                        str += ( this.authors[i].value + ", " );
+                    str += ( this.authors[i].value + " & " + this.authors[i+1].value );
 
                     return str;
                 }

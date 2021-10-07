@@ -1,6 +1,6 @@
 <template>
     <ion-item>
-        <ion-label position="stacked">{{ name }}</ion-label>
+        <ion-label position="stacked">{{ labelName }}</ion-label>
         <ion-input v-model="searchValue"
             @ionChange="updateSearchResults"
             @ionFocus="updateSearchResults"
@@ -17,7 +17,7 @@
                 @mousedown.prevent
                 @click="updateSearchField(result)"
         >
-            <ion-label>{{ result.name }}</ion-label>
+            <ion-label>{{ result.value }}</ion-label>
         </ion-item>
     </ion-list>
 </template>
@@ -35,7 +35,7 @@ export default defineComponent({
         IonList
     },
     props: {
-        name: { type: String, required: true }, //name of the field
+        labelName: { type: String, required: true }, //name of the field
         data: { type: Array, required: true, default: () => [] }, //all possible values (currently) for this field
         multipleValues: { type: Boolean, required: false, default: () => false }
     },
@@ -46,11 +46,11 @@ export default defineComponent({
         };
     }, methods: {
         updateSearchResults() {
-            this.searchResults = this.data.filter(elem => elem.name.toLowerCase().includes(this.searchValue.toLowerCase()));
+            this.searchResults = this.data.filter(elem => elem.value.toLowerCase().includes(this.searchValue.toLowerCase()));
       
             /*  Once user chooses a match, Vue will try to search again and create another list with search results
                 This check clears the list if the only result matches what is in the search box */
-            if(this.searchResults.length == 1 && this.searchResults[0].name == this.searchValue)
+            if(this.searchResults.length == 1 && this.searchResults[0].value == this.searchValue)
                 this.searchResults = [];
         },
         updateSearchField(result) {
@@ -62,7 +62,7 @@ export default defineComponent({
                     let found = false;
                     let i;
                     for(i = 0; i < this.data.length && !found; i++)
-                        if(this.data[i].name.toLowerCase() == this.searchValue.toLowerCase()) {
+                        if(this.data[i].value.toLowerCase() == this.searchValue.toLowerCase()) {
                             found = true;
                             i--;
                         }
@@ -71,8 +71,8 @@ export default defineComponent({
                         result = this.data[i];
                     else {
                         result = {
-                            "id": -1,
-                            "name": this.searchValue
+                            id: -1,
+                            value: this.searchValue
                         }
                     }
 
@@ -80,14 +80,14 @@ export default defineComponent({
                 }
             } else {
                 if(result) {
-                    this.searchValue = result.name;
+                    this.searchValue = result.value;
                     this.searchResults = []; //clear search results after match selected
                 } else { //either the field lost focus or the user hit enter?  Send whatever value is in the input box
                     let i;
                     let found = false;
                     
                     for(i = 0; i < this.data.length && !found; i++)
-                        if(this.data[i].name.toLowerCase() == this.searchValue.toLowerCase()) {
+                        if(this.data[i].value.toLowerCase() == this.searchValue.toLowerCase()) {
                             found = true;
                             i--;
                         }
@@ -96,14 +96,14 @@ export default defineComponent({
                         result = this.data[i];
                     else {
                         result = {
-                            "id": -1,
-                            "name": this.searchValue
+                            id: -1,
+                            value: this.searchValue
                         }
                     }
                 }
             }
 
-            this.$emit("value-updated", this.name, result);
+            this.$emit("value-updated", this.labelName, result);
         }
     },
     emits: [

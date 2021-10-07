@@ -1,15 +1,15 @@
 const NUM_RECENT_QUOTES = 3;
 
 let titles = [
-	{   id: 1,  name: "The New Apartheid",  type_id: 1   },
-	{   id: 2,  name: "Girl, Woman, Other", type_id: 1  },
-	{   id: 3,  name: "Homegoing",  type_id: 1   },
-    {   id: 4,  name: "Nervous Conditions", type_id: 1  },
-    {   id: 5,  name: "Slavoj Zizek on #MeToo movement. How to Watch the News, episode 02", type_id: 2, url: "https://www.youtube.com/watch?v=ai_UAPaoEW4"  },
-    {   id: 6,  name: "Half of a Yellow Sun",   type_id: 1    },
-    {   id: 7,  name: "Men hating women",   type_id: 4, url: "https://www.gq-magazine.co.uk/article/men-hating-women"  },
-    {   id: 8,  name: "Talking to white people about race", type_id: 1  },
-    {   id: 9,  name: "Sing!",  type_id: 5  }
+	{   id: 1,  value: "The New Apartheid",  type_id: 1   },
+	{   id: 2,  value: "Girl, Woman, Other", type_id: 1  },
+	{   id: 3,  value: "Homegoing",  type_id: 1   },
+    {   id: 4,  value: "Nervous Conditions", type_id: 1  },
+    {   id: 5,  value: "Slavoj Zizek on #MeToo movement. How to Watch the News, episode 02", type_id: 2, url: "https://www.youtube.com/watch?v=ai_UAPaoEW4"  },
+    {   id: 6,  value: "Half of a Yellow Sun",   type_id: 1    },
+    {   id: 7,  value: "Men hating women",   type_id: 4, url: "https://www.gq-magazine.co.uk/article/men-hating-women"  },
+    {   id: 8,  value: "Talking to white people about race", type_id: 1  },
+    {   id: 9,  value: "Sing!",  type_id: 5  }
 ];
 
 let title_types = [
@@ -17,18 +17,19 @@ let title_types = [
     {   id: 2,  value: "Video"  },
     {   id: 3,  value: "Song"   },
     {   id: 4,  value: "Article"    },
-    {   id: 5,  value: "Movie"  }
+    {   id: 5,  value: "Movie"  },
+    {   id: 6,  value: "Poem"   }
 ]
 
 let authors = [
-	{   id: 1,  name: "Sizwe Mpofu-Walsh"   },
-	{   id: 2,  name: "Bernardine Evaristo" },
-	{   id: 3,  name: "Yaa Gyasi"   },
-    {   id: 4,  name: "Tsitsi Dangarembga"  },
-    {   id: 5,  name: "Slavoj Zizek"    },
-    {   id: 6,  name: "Chimamanda Ngozi Adichie" },
-    {   id: 7,  name: "George Chesterton"   },
-    {   id: 8,  name: "Reno Eddo-Lodge" }
+	{   id: 1,  value: "Sizwe Mpofu-Walsh"   },
+	{   id: 2,  value: "Bernardine Evaristo" },
+	{   id: 3,  value: "Yaa Gyasi"   },
+    {   id: 4,  value: "Tsitsi Dangarembga"  },
+    {   id: 5,  value: "Slavoj Zizek"    },
+    {   id: 6,  value: "Chimamanda Ngozi Adichie" },
+    {   id: 7,  value: "George Chesterton"   },
+    {   id: 8,  value: "Reno Eddo-Lodge" }
 ];
 
 let title_authors = [
@@ -290,7 +291,7 @@ const findTitleTypeById = (typeId, returnTrueObj) => {
     return findElementById("type", typeId, returnTrueObj);
 }
 
-const deleteQuote= quoteId => {
+const deleteQuote = quoteId => {
     let found = false;
     let deleteObj;
     let returnObj = {
@@ -307,12 +308,7 @@ const deleteQuote= quoteId => {
 
     if(deleteObj) {
         //delete related quote_tags entries
-        for(let i = 0; i < quote_tags.length; i++) {
-            if(quote_tags[i].quote_id == quoteId) {
-                quote_tags.splice(i, 1);
-                i--;
-            }
-        }
+        quote_tags = quote_tags.filter(quote_tag => quote_tag.quote_id != quoteId);
 
         //if last quote in title, delete all related author_title entries and delete title
         let quotesInTitle = 0;
@@ -326,12 +322,14 @@ const deleteQuote= quoteId => {
         if(quotesInTitle == 0) {
             returnObj.lastQuoteInTitle = true;
 
-            let _authors = [];
+            let _authors = []; //to take note of the authors of the title being deleted
 
             for(let i = 0; i < title_authors.length; i++) {
                 if(title_authors[i].title_id == deleteObj.title_id) {
-                    _authors = _authors.concat(title_authors.splice(i, 1)); //taking note of the authors of the title being deleted
-                    i--;
+                    //1. remove the title_author entry (splice)
+                    //2. splice returns the removed entry, and we add that to the list of authors that have been removed
+                    _authors = _authors.concat(title_authors.splice(i, 1));
+                    i--; //keep i in the same place because it's been replaced by the next element
                 }
             }
 
@@ -343,10 +341,10 @@ const deleteQuote= quoteId => {
             }
 
             //if last quote by author(s), delete author(s)
-            let allAuthors = title_authors.map(obj => obj.author_id);
+            let allAuthorsWithTitles = title_authors.map(obj => obj.author_id);
 
             for(let i = 0; i < _authors.length; i++) {
-                if(! isIn(_authors[i].author_id, allAuthors)) {
+                if(! allAuthorsWithTitles.includes(_authors[i].author_id)) {
                     for(let j = 0; j < authors.length; j++) {
                         if(authors[j].id == _authors[i].author_id) {
                             authors.splice(j, 1);
@@ -364,15 +362,6 @@ const deleteQuote= quoteId => {
         return returnObj;
 }
 
-const isIn = (item, arr) => { //helper function to determine whether a given item appears in an array.  Works best for primitive data types.
-    for(let i = 0; i < arr.length; i++) {
-        if(arr[i] == item)
-            return true;
-    }
-
-    return false;
-}
-
 const joinQuoteWithTags = quoteId => {
     let quote = findQuoteById(quoteId);
 
@@ -384,6 +373,8 @@ const joinQuoteWithTags = quoteId => {
                 let tag = findTagById(quote_tags[i].tag_id);
                 if(tag)
                     _tags.push(tag);
+                else   
+                    console.log("Something weird is going on; cannot find corresponding tag", quote_tags[i]);
             }
         }
 
@@ -396,32 +387,19 @@ const joinQuoteWithTags = quoteId => {
     return null;
 }
 
-/* const joinTitleWithType = titleId => {
-    let title = findTitleById(titleId);
-
-    if(title) {
-        let titleType = findTitleTypeById(title.type_id);
-        delete title.type_id;
-        title.type = titleType;
-        
-        return title;
-    }
-
-    return null;
-} */
-
 const joinTitleWithAuthors = titleId => {
     let title = findTitleById(titleId);
 
     if(title) {
+        let titleAuthors = title_authors.filter(row => row.title_id == titleId);
         let _authors = [];
 
-        for(let i = 0; i < title_authors.length; i++) {
-            if(title_authors[i].title_id == titleId) {
-                let author = findAuthorById(title_authors[i].author_id);
-                if(author)
-                    _authors.push(author);
-            }
+        for(let i = 0; i < titleAuthors.length; i++) {
+            let author = findAuthorById(titleAuthors[i].author_id);
+            if(author)
+                _authors.push(author);
+            else
+                console.log("Something fishy; can't find author for this entry", titleAuthors[i]);
         }
 
         return {
@@ -439,9 +417,9 @@ const getQuoteWithAllAttributes = quoteId => {
     if(quoteAndTags) {
         let titleAndAuthors = joinTitleWithAuthors(quoteAndTags.quote.title_id);
 
-        let titleType = findTitleTypeById(quoteAndTags.quote.type_id);
-        delete quoteAndTags.quote.type_id;
-        quoteAndTags.quote.type = titleType;
+        let titleType = findTitleTypeById(titleAndAuthors.title.type_id);
+        delete titleAndAuthors.title.type_id;
+        titleAndAuthors.title.type = titleType;
 
         return {
             quote: quoteAndTags.quote,
@@ -464,8 +442,8 @@ const sortQuotesByDate = (quoteA, quoteB) => { //sort from most recent to oldest
 }
 
 const sortAlphabetically = (elemA, elemB) => {
-    let elemAFirstLetter = elemA.name[0];
-    let elemBFirstLetter = elemB.name[0];
+    let elemAFirstLetter = elemA.value[0];
+    let elemBFirstLetter = elemB.value[0];
 
     if(elemAFirstLetter < elemBFirstLetter)
         return -1;
@@ -475,8 +453,16 @@ const sortAlphabetically = (elemA, elemB) => {
     return 0;
 }
 
+const sortById = (elemA, elemB) => {
+    if(elemA.id > elemB.id)
+        return 1;
+    if(elemA.id < elemB.id)
+        return -1;
+    
+        return 0;
+}
+
 const getRecentlyAddedQuotes = () => {
-    console.log("RECENT");
     return getQuotes("recent");
 }
 
@@ -520,7 +506,7 @@ const getQuotes = (option, optionId) => {
 }
 
 const updateQuote = (quoteId, newProps) => {
-    let quote = findQuoteById(quoteId, true);
+    let quote = findQuoteById(quoteId, true); //return the original object
 
     if(!quote)
         return null;
@@ -540,9 +526,9 @@ const getAllTitlesAndAuthors = () => {
         titlesAndAuthors.push(joinTitleWithAuthors(titles[i].id));
 
     titlesAndAuthors.sort((objA, objB) => {
-        if(objA.title.name[0] > objB.title.name[0])
+        if(objA.title.value[0] > objB.title.value[0])
             return 1;
-        if(objA.title.name[0] < objB.title.name[0])
+        if(objA.title.value[0] < objB.title.value[0])
             return -1;
 
         return 0;
@@ -575,12 +561,7 @@ const getAllTitleTypes = () => {
 }
 
 const getAllTags = () => {
-    let _tags = tags.map(function(tag) { //Why is arrow function not working here??
-        return {
-            "id": tag.id,
-            "name": tag.value
-        }
-    });
+    let _tags = tags.map(tag => Object.assign({}, tag));
     _tags.sort(sortAlphabetically);
 
     return _tags;
@@ -589,10 +570,11 @@ const getAllTags = () => {
 const createQuote = newObj => {
     //create title, if necessary
     if(newObj.quote.title_id == -1) {
+        titles.sort(sortById);
         let nextTitleId = titles[titles.length - 1].id + 1;
         titles.push({
             id: nextTitleId,
-            name: newObj.title.name,
+            value: newObj.title.value,
             type_id: newObj.title.type
         });
 
@@ -604,11 +586,12 @@ const createQuote = newObj => {
     let oldAuthors = newObj.authors.filter(author => author.id != -1);
     let allAuthorIds = [];
 
+    authors.sort(sortById);
     let nextAuthorId = authors[authors.length - 1].id + 1;
     for(let i = 0; i < newAuthors.length; i++) {
         authors.push({
             id: nextAuthorId,
-            name: newAuthors[i].name
+            value: newAuthors[i].value
         });
 
         allAuthorIds.push(nextAuthorId);
@@ -626,6 +609,7 @@ const createQuote = newObj => {
     }
 
     //create quote object
+    quotes.sort(sortById);
     let quote = {
         id: quotes[quotes.length - 1].id + 1,
         text: newObj.quote.text,
@@ -641,12 +625,13 @@ const createQuote = newObj => {
     let oldTags = newObj.tags.filter(tag => tag.id != -1);
 
     let tagIds = [];
+    tags.sort(sortById);
     let nextTagId = tags[tags.length - 1].id + 1;
 
     for(let i = 0; i < newTags.length; i++) {
         tags.push({
             id: nextTagId,
-            value: newTags[i].name
+            value: newTags[i].value
         });
 
         tagIds.push(nextTagId);

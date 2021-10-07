@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <AppHeader :title="title.name" />
+    <AppHeader :title="title.value" />
     
     <ion-content :fullscreen="true">
       <div id="container">

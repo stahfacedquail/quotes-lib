@@ -9,11 +9,11 @@
             <ion-textarea class="inputQuote" rows="10" v-model="quoteText"></ion-textarea>
           </ion-item>
 
-          <AutoComplete name="Title" :data="titles" :multipleValues="false" @valueUpdated="updateReqObj" />
-          <AutoComplete name="Authors" :data="authors" :multipleValues="true" @valueUpdated="updateReqObj" />
+          <AutoComplete labelName="Title" :data="titles" :multipleValues="false" @valueUpdated="updateReqObj" />
+          <AutoComplete labelName="Authors" :data="authors" :multipleValues="true" @valueUpdated="updateReqObj" />
           <ion-list>
             <ion-item lines="none" v-for="(author, idx) in chosenAuthors" :key="idx">
-              <ion-label>{{ author.name }}</ion-label>
+              <ion-label>{{ author.value }}</ion-label>
               <ion-icon :icon="closeCircle" @click="removeAuthor(idx)" />
             </ion-item>
           </ion-list>
@@ -98,7 +98,7 @@ export default defineComponent({
       console.log(this.chosenAuthors);
 
       for(let i = 0; i < this.chosenAuthors.length && !found; i++) {
-        if(this.chosenAuthors[i].id == authObj.id && this.chosenAuthors[i].name.toLowerCase() == authObj.name.toLowerCase())
+        if(this.chosenAuthors[i].id == authObj.id && this.chosenAuthors[i].value.toLowerCase() == authObj.value.toLowerCase())
           found = true;
       }
 
@@ -113,7 +113,7 @@ export default defineComponent({
           title_id: this.chosenTitle.id
         },
         title: {
-          name: this.chosenTitle.name,
+          value: this.chosenTitle.value,
           type: this.chosenType
         },
         authors: this.chosenAuthors,
