@@ -9,7 +9,7 @@
             <ion-textarea class="inputQuote" rows="10" v-model="quoteText"></ion-textarea>
           </ion-item>
 
-          <AutoComplete labelName="Title" :data="titles" :multipleValues="false" @valueUpdated="updateReqObj" />
+          <AutoComplete labelName="Title" :data="titles" @valueUpdated="updateReqObj" />
           <AutoComplete labelName="Authors" :data="authors" :multipleValues="true" @valueUpdated="updateReqObj" />
           <ion-list>
             <ion-item lines="none" v-for="(author, idx) in chosenAuthors" :key="idx">
@@ -27,9 +27,15 @@
             </ion-select>
           </ion-item>
 
-          <TagInput :data="tags" @valueUpdated="updateReqObj" />
+          <AutoComplete labelName="Tags" :data="tags" :multipleValues="true" @valueUpdated="updateReqObj" />
+          <ion-list>
+            <ion-chip v-for="(tag, idx) in chosenTags" :key="idx">
+              <ion-label>{{ tag.value }}</ion-label>
+              <ion-icon :icon="closeCircle" @click="removeTag(idx)" />
+            </ion-chip>
+          </ion-list>
 
-          <ion-button @click="createQuote">
+          <ion-button @click="createQuote" :disabled="quoteText.trim().length == 0">
             <ion-icon :icon="addOutline"></ion-icon>&nbsp;&nbsp;Save quote
           </ion-button>
       </div>
@@ -38,11 +44,10 @@
 </template>
 
 <script>
-import { IonContent, IonPage, IonTextarea, IonLabel, IonItem, IonSelect, IonSelectOption, IonIcon, IonButton, IonList } from '@ionic/vue';
+import { IonContent, IonPage, IonTextarea, IonLabel, IonItem, IonSelect, IonSelectOption, IonIcon, IonButton, IonList, IonChip } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import AppHeader from "../components/AppHeader.vue";
 import AutoComplete from "../components/AutoComplete.vue";
-import TagInput from "../components/TagInput.vue";
 import db from '../db/mockDb.js';
 import { addOutline, closeCircle } from "ionicons/icons";
 
@@ -58,10 +63,10 @@ export default defineComponent({
     AutoComplete,
     IonSelect,
     IonSelectOption,
-    TagInput,
     IonIcon,
     IonButton,
-    IonList
+    IonList,
+    IonChip
   },
 
   data() {
@@ -83,28 +88,20 @@ export default defineComponent({
       if(field == "Title") 
         this.chosenTitle = data;
       else if(field == "Authors") {
-        if(this.findInChosenAuthorsArr(data))
+        if(this.chosenAuthors.map(author => author.value.toLowerCase()).includes(data.value.toLowerCase()))
           return;
         this.chosenAuthors.push(data);
-      } else if(field == "Tags")
-        this.chosenTags = data;
+      } else if(field == "Tags") {
+        if(this.chosenTags.map(tag => tag.value.toLowerCase()).includes(data.value.toLowerCase()))
+          return;
+        this.chosenTags.push(data);
+      }
     },
     removeAuthor(idx) {
       this.chosenAuthors.splice(idx, 1);
     },
-    findInChosenAuthorsArr(authObj) {
-      let found = false;
-      console.log(authObj);
-      console.log(this.chosenAuthors);
-
-      for(let i = 0; i < this.chosenAuthors.length && !found; i++) {
-        if(this.chosenAuthors[i].id == authObj.id && this.chosenAuthors[i].value.toLowerCase() == authObj.value.toLowerCase())
-          found = true;
-      }
-
-      console.log(found);
-
-      return found;
+    removeTag(i) {
+      this.chosenTags.splice(i, 1);
     },
     createQuote() {
       let postObj = {
