@@ -14,7 +14,7 @@
           <ion-list>
             <ion-item lines="none" v-for="(author, idx) in chosenAuthors" :key="idx">
               <ion-label>{{ author.value }}</ion-label>
-              <ion-icon :icon="closeCircle" @click="removeAuthor(idx)" />
+              <ion-icon :icon="closeCircle" @click="chosenAuthors.splice(idx, 1)" />
             </ion-item>
           </ion-list>
 
@@ -31,7 +31,7 @@
           <ion-list>
             <ion-chip v-for="(tag, idx) in chosenTags" :key="idx">
               <ion-label>{{ tag.value }}</ion-label>
-              <ion-icon :icon="closeCircle" @click="removeTag(idx)" />
+              <ion-icon :icon="closeCircle" @click="chosenTags.splice(idx), 1" />
             </ion-chip>
           </ion-list>
 
@@ -83,7 +83,9 @@ export default defineComponent({
       chosenType: {},
       chosenTags: []
     };
-  }, methods: {
+  },
+  
+  methods: {
     updateReqObj(field, data) {
       if(field == "Title") 
         this.chosenTitle = data;
@@ -96,12 +98,6 @@ export default defineComponent({
           return;
         this.chosenTags.push(data);
       }
-    },
-    removeAuthor(idx) {
-      this.chosenAuthors.splice(idx, 1);
-    },
-    removeTag(i) {
-      this.chosenTags.splice(i, 1);
     },
     createQuote() {
       let postObj = {
@@ -120,7 +116,9 @@ export default defineComponent({
       console.log(postObj);
       db.createQuote(postObj);
     }
-  }, setup() {
+  },
+  
+  setup() {
     return {
       addOutline,
       closeCircle
