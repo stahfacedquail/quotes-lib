@@ -4,6 +4,7 @@ import AddQuote from "../views/AddQuote.vue";
 import AllQuotes from '../views/AllQuotes.vue';
 import FavouriteQuotes from "../views/FavouriteQuotes.vue";
 import QuotesInTitle from "../views/QuotesInTitle.vue";
+import ViewQuote from "../views/ViewQuote.vue";
 
 const routes = [
   {
@@ -34,6 +35,11 @@ const routes = [
     path: '/quotes/title/:id',
     name: "QuotesInTitle",
     component: QuotesInTitle
+  },
+  {
+    path: '/quotes/:id',
+    name: "ViewQuote",
+    component: ViewQuote
   }
 ]
 

@@ -1,5 +1,5 @@
 <template>
-    <ion-card style="border: solid black 12;">
+    <ion-card style="border: solid black 12;" button :router-link="'/quotes/' + quote.id">
         <ion-card-content class="quoteText">
             {{ quote.text }}
         </ion-card-content>

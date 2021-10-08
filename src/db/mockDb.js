@@ -466,8 +466,8 @@ const sortQuotesByDate = (quoteA, quoteB) => { //sort from most recent to oldest
 }
 
 const sortAlphabetically = (elemA, elemB) => {
-    let elemAFirstLetter = elemA.value[0];
-    let elemBFirstLetter = elemB.value[0];
+    let elemAFirstLetter = elemA.value[0].toLowerCase();
+    let elemBFirstLetter = elemB.value[0].toLowerCase();
 
     if(elemAFirstLetter < elemBFirstLetter)
         return -1;
@@ -550,9 +550,9 @@ const getAllTitlesAndAuthors = () => {
         titlesAndAuthors.push(joinTitleWithAuthors(titles[i].id));
 
     titlesAndAuthors.sort((objA, objB) => {
-        if(objA.title.value[0] > objB.title.value[0])
+        if(objA.title.value[0].toLowerCase() > objB.title.value[0].toLowerCase())
             return 1;
-        if(objA.title.value[0] < objB.title.value[0])
+        if(objA.title.value[0].toLowerCase() < objB.title.value[0].toLowerCase())
             return -1;
 
         return 0;

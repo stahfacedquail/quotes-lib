@@ -21,7 +21,7 @@
           <ion-item>
             <ion-label position="stacked">Type</ion-label>
             <ion-select v-model="chosenType">
-              <ion-select-option v-for="(type, idx) in types" :key="idx" :value="type.id">
+              <ion-select-option v-for="(type, idx) in types" :key="idx" :value="type">
                 {{ type.value }}
               </ion-select-option>
             </ion-select>
@@ -121,6 +121,8 @@ export default defineComponent({
       else
         //quote creation failed -- alert??
         msg = "Quote creation failed :(";
+
+      console.log("CREATED", createdObj);
 
       const toast = await toastController
         .create({
