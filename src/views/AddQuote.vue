@@ -106,7 +106,7 @@ export default defineComponent({
           title_id: "id" in this.chosenTitle ? this.chosenTitle.id : null
         },
         title: {
-          value: "value" in this.chosenTitle ? this.chosenTitle.value : null,
+          value: "value" in this.chosenTitle && this.chosenTitle.trim().value.length > 0 ? this.chosenTitle.value : null,
           type_id: "id" in this.chosenType ? this.chosenType.id : null
         },
         authors: this.chosenAuthors,

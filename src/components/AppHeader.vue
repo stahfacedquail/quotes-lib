@@ -29,7 +29,7 @@ export default defineComponent({
         IonToolbar
     },
     props: {
-        title: { type: String,  required: true  }
+        title: { type: String,  required: false, default: () => ""  }
     },
     setup() {
         return {

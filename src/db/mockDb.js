@@ -609,7 +609,7 @@ const createQuote = newObj => {
     */
 
     //create title, if necessary
-    if(newObj.quote.title_id && newObj.quote.title_id == -1) {
+    if(newObj.title.value && newObj.quote.title_id == -1) {
         titles.sort(sortById);
         let nextTitleId = titles[titles.length - 1].id + 1;
         titles.push({
