@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { IonContent, IonPage, IonTextarea, IonLabel, IonItem, IonSelect, IonSelectOption, IonIcon, IonButton, IonList, IonChip } from '@ionic/vue';
+import { IonContent, IonPage, IonTextarea, IonLabel, IonItem, IonSelect, IonSelectOption, IonIcon, IonButton, IonList, IonChip, toastController } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import AppHeader from "../components/AppHeader.vue";
 import AutoComplete from "../components/AutoComplete.vue";
@@ -99,25 +99,40 @@ export default defineComponent({
         this.chosenTags.push(data);
       }
     },
-    createQuote() {
+    async createQuote() {
       let postObj = {
         quote: {
           text: this.quoteText,
-          title_id: this.chosenTitle.id
+          title_id: "id" in this.chosenTitle ? this.chosenTitle.id : null
         },
         title: {
-          value: this.chosenTitle.value,
-          type: this.chosenType
+          value: "value" in this.chosenTitle ? this.chosenTitle.value : null,
+          type_id: "id" in this.chosenType ? this.chosenType.id : null
         },
         authors: this.chosenAuthors,
         tags: this.chosenTags
       };
 
-      console.log(postObj);
-      db.createQuote(postObj);
+      let createdObj = db.createQuote(postObj);
+      let msg = "";
+      
+      if(createdObj)
+        msg = "Quote successfully added (\",)";
+      else
+        //quote creation failed -- alert??
+        msg = "Quote creation failed :(";
+
+      const toast = await toastController
+        .create({
+          message: msg,
+          duration: 2000
+        });
+      
+      this.$router.push("home");
+      
+      return toast.present();
     }
   },
-  
   setup() {
     return {
       addOutline,
