@@ -1,6 +1,6 @@
 <template>
-    <ion-card style="border: solid black 12;" button :router-link="'/quotes/' + quote.id">
-        <ion-card-content class="quoteText">
+    <ion-card style="border: solid black 12;">
+        <ion-card-content class="quoteText" button :router-link="'/quotes/' + quote.id">
             {{ quote.text }}
         </ion-card-content>
         <ion-card-content style="border-top:1px solid gray; padding:0px; margin-top:13px;">
@@ -8,7 +8,7 @@
             <ion-icon v-if="quote.is_favourite" :icon="heart"></ion-icon>
             <ion-icon v-else :icon="heartOutline"></ion-icon>
         </ion-button>
-        <ion-button fill="clear" @click="$emit('delete-quote', quote.id)">
+        <ion-button fill="clear" @click="confirmQuoteDelete">
             <ion-icon :icon="trashOutline"></ion-icon>
         </ion-button>
         </ion-card-content>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { IonCard, IonCardContent, IonButton, IonIcon } from '@ionic/vue';
+import { IonCard, IonCardContent, IonButton, IonIcon, alertController } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import { heartOutline, heart, trashOutline } from "ionicons/icons";
 
@@ -31,6 +31,28 @@ export default defineComponent({
       IonCardContent,
       IonButton,
       IonIcon
+  },
+  methods: {
+    async confirmQuoteDelete() {
+        const alert = await alertController
+            .create({
+                message: 'Are you sure you want to delete this quote?',
+                buttons: [
+                    {
+                        text: 'Yes',
+                        handler: () => {
+                            this.$emit('delete-quote', this.quote.id)
+                        },
+                    },
+                    {
+                        text: 'No',
+                        role: "cancel"
+                    },
+                ]
+            });
+        
+        return alert.present();
+    }
   },
   setup() {
     return {
