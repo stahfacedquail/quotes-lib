@@ -98,11 +98,11 @@ export default defineComponent({
   },
 
   mounted() {
-      Promise.all([
+      return Promise.all([
         this.getRecentlyAddedQuotes(),
         this.getAllTitlesAndAuthors()
       ])
-      .then(() => console.log("Done mounting!"))
+      .then(() => console.log("HOME Done mounting!"))
       .catch(error => console.log("ERROR!", error));
   },
 
