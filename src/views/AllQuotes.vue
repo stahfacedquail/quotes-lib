@@ -66,7 +66,7 @@ export default defineComponent({
     },
 
     getAllQuotes() {
-      return this.$axios.get('/quotes').then(({ data }) => this.allQuotes = data)
+      return this.$axios.get('/quotes').then(({ data }) => this.allQuotes = data);
     }
   }
 });

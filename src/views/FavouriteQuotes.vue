@@ -20,7 +20,6 @@
 <script>
 import { IonContent, IonPage } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import db from '../db/mockDb.js';
 import QuoteCard from "../components/QuoteCard.vue";
 import AppHeader from "../components/AppHeader.vue";
 
@@ -35,26 +34,42 @@ export default defineComponent({
 
   data() {
     return {
-      favQuotes: db.getFavouriteQuotes()
+      favQuotes: []
     };
+  },
+
+  mounted() {
+    return this.getFavouriteQuotes()
+      .then(() => console.log("Done mounting FAVOURITES"))
+      .catch(error => console.log(error));
   },
 
   methods: {
     updateFavourite(quote, idx) {
-      this.favQuotes[idx] = db.updateQuote(
-        quote.id,
-        { is_favourite: !quote.is_favourite  }
-      );
-
-      this.favQuotes.splice(idx, 1);
+      this.$axios.patch(`/quote/${quote.id}`, { is_favourite: !quote.is_favourite })
+      .then(({ data }) => {
+        this.favQuotes[idx] = data;
+        this.favQuotes.splice(idx, 1); //remove from list of favourites
+      })
+      .catch(error => console.log("ERROR!", error));
     },
 
     deleteQuote(quoteId) {
-      let { success } = db.deleteQuote(quoteId);
+      this.$axios.delete(`/quote/${quoteId}`)
+      .then(res => {
+        let { success } = res.data;
 
-      if(success) {
-        this.favQuotes = db.getFavouriteQuotes();
-      }
+        if(success)
+          return this.getFavouriteQuotes();
+        else {
+          //inform user delete was unsuccessful -- a toast?
+        }
+      })
+      .catch(error => console.log("ERROR!", error));
+    },
+
+    getFavouriteQuotes() {
+      return this.$axios.get('/quotes?favourite=true').then(({ data }) => this.favQuotes = data);
     }
   }
 });
