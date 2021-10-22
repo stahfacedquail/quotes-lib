@@ -1,4 +1,4 @@
-const NUM_RECENT_QUOTES = 3;
+const NUM_RECENT_QUOTES = 5;
 
 let titles = [
 	{   id: 1,  value: "The New Apartheid",  type_id: 1   },
@@ -391,6 +391,13 @@ const joinTitleWithAuthors = titleId => {
     let title = findTitleById(titleId);
 
     if(title) {
+        if("type_id" in title) {
+            title.type = title_types.find(type => type.id == title.type_id);
+            delete title.type_id;
+        } else {
+            title.type = null;
+        }
+
         let titleAuthors = title_authors.filter(row => row.title_id == titleId);
         let _authors = [];
 
@@ -698,6 +705,7 @@ export default {
     findQuoteById,
     findTitleById,
     getQuoteWithAllAttributes, 
+    joinTitleWithAuthors,
     getRecentlyAddedQuotes,
     getAllQuotes,
     getFavouriteQuotes,

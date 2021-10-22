@@ -87,9 +87,25 @@ export default defineComponent({
   
   methods: {
     updateReqObj(field, data) {
-      if(field == "Title") 
+      if(field == "Title") {
         this.chosenTitle = data;
-      else if(field == "Authors") {
+        console.log(data);
+
+        if(data.id >= 0) {
+          let titleObj = db.joinTitleWithAuthors(data.id);
+          console.log(titleObj);
+
+          if(titleObj) {
+            this.chosenAuthors = titleObj.authors;
+            this.chosenType = titleObj.title.type;
+          } else {
+            console.log("A funk: can't find title in db", data)
+          }
+        } else { //reset
+          this.chosenAuthors = [];
+          this.chosenType = {};
+        }
+      } else if(field == "Authors") {
         if(this.chosenAuthors.map(author => author.value.toLowerCase()).includes(data.value.toLowerCase()))
           return;
         this.chosenAuthors.push(data);
@@ -106,7 +122,7 @@ export default defineComponent({
           title_id: "id" in this.chosenTitle ? this.chosenTitle.id : null
         },
         title: {
-          value: "value" in this.chosenTitle && this.chosenTitle.trim().value.length > 0 ? this.chosenTitle.value : null,
+          value: "value" in this.chosenTitle && this.chosenTitle.value.trim().length > 0 ? this.chosenTitle.value : null,
           type_id: "id" in this.chosenType ? this.chosenType.id : null
         },
         authors: this.chosenAuthors,
@@ -119,7 +135,6 @@ export default defineComponent({
       if(createdObj)
         msg = "Quote successfully added (\",)";
       else
-        //quote creation failed -- alert??
         msg = "Quote creation failed :(";
 
       console.log("CREATED", createdObj);

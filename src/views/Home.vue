@@ -33,12 +33,12 @@
 
       <ion-list>
         <TitleItem
-          v-for="(obj, idx) in titles"
+          v-for="(title, idx) in titles"
           :key="idx"
-          :title="obj.title"
-          :authors="obj.authors"
+          :title="title"
+          :authors="title.authors"
 
-          :router-link="'/quotes/title/' + obj.title.id"
+          :router-link="'/quotes/title/' + title.id"
         />
       </ion-list>
     </ion-content>
@@ -63,7 +63,6 @@ import Menu from "../components/Menu.vue";
 import QuoteCard from "../components/QuoteCard.vue";
 import TitleItem from "../components/TitleItem.vue";
 import { addOutline, menuOutline } from "ionicons/icons";
-import db from "../db/mockDb.js";
 
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/swiper-bundle.min.css';
@@ -93,9 +92,18 @@ export default defineComponent({
 
   data() {
     return {
-      recentQuotes: db.getRecentlyAddedQuotes(),
-      titles: db.getAllTitlesAndAuthors()
+      recentQuotes: [],
+      titles: []
     };
+  },
+
+  mounted() {
+      Promise.all([
+        this.getRecentlyAddedQuotes(),
+        this.getAllTitlesAndAuthors()
+      ])
+      .then(() => console.log("Done mounting!"))
+      .catch(error => console.log("ERROR!", error));
   },
 
   setup() {
@@ -107,20 +115,39 @@ export default defineComponent({
 
   methods: {
     updateFavourite(quote, idx) {
-      this.recentQuotes[idx] = db.updateQuote(
-        quote.id,
-        { is_favourite: !quote.is_favourite  }
-      );
+      this.$axios.patch(`/quote/${quote.id}`, { is_favourite: !quote.is_favourite })
+      .then(({ data }) => this.recentQuotes[idx] = data )
+      .catch(error => console.log("ERROR!", error));
     },
 
     deleteQuote(quoteId) {
-      let { success, lastQuoteInTitle } = db.deleteQuote(quoteId);
+      this.$axios.delete(`/quote/${quoteId}`)
+      .then(res => {
+        let { success, lastQuoteInTitle } = res.data;
 
-      if(success) {
-        this.recentQuotes = db.getRecentlyAddedQuotes();
-        if(lastQuoteInTitle)
-          this.titles = db.getAllTitlesAndAuthors();
-      }
+        let nextActions = [];
+        if(success) {
+          nextActions.push(this.getRecentlyAddedQuotes());
+
+          if(lastQuoteInTitle) {
+            //update list of titles so as to remove zombie title
+            nextActions.push(this.getAllTitlesAndAuthors());
+          }
+        } else {
+          //inform user delete was unsuccessful -- a toast?
+        }
+
+        return Promise.all(nextActions);
+      })
+      .catch(error => console.log("ERROR!", error));
+    },
+
+    getRecentlyAddedQuotes() {
+      return this.$axios.get('/quotes?recent=true').then(({ data }) => this.recentQuotes = data);
+    },
+
+    getAllTitlesAndAuthors() {
+      return this.$axios.get('/titles?full=true').then(({ data }) => this.titles = data);
     },
 
     openMenu() {
@@ -149,7 +176,7 @@ ion-content {
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  padding-bottom: 0px; /* withouth this, one more line appears after the clamp */
+  padding-bottom: 0px; /* without this, one more line appears after the clamp */
 }
 
 .swiper-slide {
