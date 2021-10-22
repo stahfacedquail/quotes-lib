@@ -20,7 +20,6 @@
 <script>
 import { IonContent, IonPage } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import db from '../db/mockDb.js';
 import QuoteCard from "../components/QuoteCard.vue";
 import AppHeader from "../components/AppHeader.vue";
 import { useRoute } from "vue-router";
@@ -36,27 +35,47 @@ export default defineComponent({
 
   data() {
     return {
-        quotes: db.getQuotesInTitle(this.id),
-        title: db.findTitleById(this.id)
+        quotes: [],
+        title: {}
     };
   },
 
-  methods: {
-    updateFavourite(quote, idx) {
-      this.quotes[idx] = db.updateQuote(
-        quote.id,
-        { is_favourite: !quote.is_favourite  }
-      );
+  mounted() {
+    Promise.all([
+      this.getQuotesInTitle(),
+      this.findTitleById()
+    ])
+    .then(() => console.log("QUOTESINTITLE Done mounting"))
+    .catch(error => console.log("ERROR", error));
+  },
 
-      console.log(this.quotes[idx]);
+  methods: {
+    getQuotesInTitle() {
+      return this.$axios.get(`/quotes?titleId=${this.id}`).then(({ data }) => this.quotes = data);
+    },
+
+    findTitleById() {
+      return this.$axios.get(`/title/${this.id}`).then(({ data }) => this.title = data);
+    },
+
+    updateFavourite(quote, idx) {
+      this.$axios.patch(`/quote/${quote.id}`, { is_favourite: !quote.is_favourite })
+      .then(({ data }) => this.quotes[idx] = data )
+      .catch(error => console.log("ERROR!", error));
     },
 
     deleteQuote(quoteId) {
-      let { success } = db.deleteQuote(quoteId);
+      this.$axios.delete(`/quote/${quoteId}`)
+      .then(res => {
+        let { success } = res.data;
 
-      if(success) {
-        this.quotes = db.getQuotesInTitle(this.id);
-      }
+        if(success)
+          return this.getQuotesInTitle();
+        else {
+          //inform user delete was unsuccessful -- a toast?
+        }
+      })
+      .catch(error => console.log("ERROR!", error));
     }
   },
 
