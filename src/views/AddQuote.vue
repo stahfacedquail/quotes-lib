@@ -112,21 +112,21 @@ export default defineComponent({
       return this.$axios.get("/tags").then(({ data }) => this.tags = data);
     },
 
-    updateReqObj(field, data) {
+    updateReqObj(field, input) {
       if(field == "Title") {
-        this.chosenTitle = data;
-        console.log(data);
+        this.chosenTitle = input;
+        console.log(input);
 
-        if(data.id >= 0) {
-          this.$axios.get(`/title/${data.id}?full=true`)
-          .then(titleObj => {
-            console.log(titleObj);
+        if(input.id >= 0) {
+          this.$axios.get(`/title/${input.id}?full=true`)
+          .then(({ data }) => {
+            console.log(data);
 
-            if(titleObj) {
-              this.chosenAuthors = titleObj.authors;
-              this.chosenType = titleObj.title.type;
+            if(data) {
+              this.chosenAuthors = data.authors;
+              this.chosenType = data.type;
             } else {
-              console.log("A funk: can't find title in db", data)
+              console.log("A funk: can't find title in db", input)
             }
           })
         } else { //reset
@@ -134,13 +134,13 @@ export default defineComponent({
           this.chosenType = {};
         }
       } else if(field == "Authors") {
-        if(this.chosenAuthors.map(author => author.value.toLowerCase()).includes(data.value.toLowerCase()))
+        if(this.chosenAuthors.map(author => author.value.toLowerCase()).includes(input.value.toLowerCase()))
           return;
-        this.chosenAuthors.push(data);
+        this.chosenAuthors.push(input);
       } else if(field == "Tags") {
-        if(this.chosenTags.map(tag => tag.value.toLowerCase()).includes(data.value.toLowerCase()))
+        if(this.chosenTags.map(tag => tag.value.toLowerCase()).includes(input.value.toLowerCase()))
           return;
-        this.chosenTags.push(data);
+        this.chosenTags.push(input);
       }
     },
     createQuote() {
