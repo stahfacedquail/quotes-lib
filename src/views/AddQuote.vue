@@ -48,7 +48,6 @@ import { IonContent, IonPage, IonTextarea, IonLabel, IonItem, IonSelect, IonSele
 import { defineComponent } from 'vue';
 import AppHeader from "../components/AppHeader.vue";
 import AutoComplete from "../components/AutoComplete.vue";
-import db from '../db/mockDb.js';
 import { addOutline, closeCircle } from "ionicons/icons";
 
 export default defineComponent({
@@ -73,10 +72,10 @@ export default defineComponent({
     return {
       quoteText: "",
 
-      titles: db.getAllTitles(),
-      authors: db.getAllAuthors(),
-      types: db.getAllTitleTypes(),
-      tags: db.getAllTags(),
+      titles: [],
+      authors: [],
+      types: [],
+      tags: [],
 
       chosenTitle: {},
       chosenAuthors: [],
@@ -84,38 +83,67 @@ export default defineComponent({
       chosenTags: []
     };
   },
+
+  mounted() {
+    Promise.all([
+      this.getAllTitles(),
+      this.getAllAuthors(),
+      this.getAllTitleTypes(),
+      this.getAllTags()
+    ])
+    .then(() => console.log("ADDQUOTE done mounting"))
+    .catch(error => console.log("ERROR", error));
+  },
   
   methods: {
-    updateReqObj(field, data) {
+    getAllTitles() {
+      return this.$axios.get("/titles").then(({ data }) => this.titles = data);
+    },
+
+    getAllAuthors() {
+      return this.$axios.get("/authors").then(({ data }) => this.authors = data);
+    },
+
+    getAllTitleTypes() {
+      return this.$axios.get("/types").then(({ data }) => this.types = data);
+    },
+
+    getAllTags() {
+      return this.$axios.get("/tags").then(({ data }) => this.tags = data);
+    },
+
+    updateReqObj(field, input) {
       if(field == "Title") {
-        this.chosenTitle = data;
-        console.log(data);
+        this.chosenTitle = input;
+        console.log(input);
 
-        if(data.id >= 0) {
-          let titleObj = db.joinTitleWithAuthors(data.id);
-          console.log(titleObj);
+        if(input.id >= 0) {
+          this.$axios.get(`/title/${input.id}?full=true`)
+          .then(({ data }) => {
+            console.log(data);
 
-          if(titleObj) {
-            this.chosenAuthors = titleObj.authors;
-            this.chosenType = titleObj.title.type;
-          } else {
-            console.log("A funk: can't find title in db", data)
-          }
+            if(data) {
+              this.chosenAuthors = data.authors;
+              this.chosenType = data.type;
+            } else {
+              console.log("A funk: can't find title in db", input)
+            }
+          })
         } else { //reset
           this.chosenAuthors = [];
           this.chosenType = {};
         }
       } else if(field == "Authors") {
-        if(this.chosenAuthors.map(author => author.value.toLowerCase()).includes(data.value.toLowerCase()))
+        if(this.chosenAuthors.map(author => author.value.toLowerCase()).includes(input.value.toLowerCase()))
           return;
-        this.chosenAuthors.push(data);
+        this.chosenAuthors.push(input);
       } else if(field == "Tags") {
-        if(this.chosenTags.map(tag => tag.value.toLowerCase()).includes(data.value.toLowerCase()))
+        if(this.chosenTags.map(tag => tag.value.toLowerCase()).includes(input.value.toLowerCase()))
           return;
-        this.chosenTags.push(data);
+        this.chosenTags.push(input);
       }
     },
-    async createQuote() {
+    createQuote() {
       let postObj = {
         quote: {
           text: this.quoteText,
@@ -129,25 +157,26 @@ export default defineComponent({
         tags: this.chosenTags
       };
 
-      let createdObj = db.createQuote(postObj);
       let msg = "";
-      
-      if(createdObj)
+      this.$axios.post('/quote', postObj)
+      .then(() => {
         msg = "Quote successfully added (\",)";
-      else
+      })
+      .catch(error => {
+        console.log("ERROR", error);
         msg = "Quote creation failed :(";
-
-      console.log("CREATED", createdObj);
-
-      const toast = await toastController
-        .create({
-          message: msg,
-          duration: 2000
-        });
-      
-      this.$router.push("home");
-      
-      return toast.present();
+      })
+      .then(() => {
+        return toastController.create({
+            message: msg,
+            duration: 2000
+          });
+      })
+      .then(toast => {
+        this.$router.push("home");
+        
+        return toast.present();
+      });
     }
   },
   setup() {
