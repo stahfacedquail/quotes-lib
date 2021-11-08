@@ -12,16 +12,16 @@
           <AutoComplete labelName="Title" :data="titles" @valueUpdated="updateReqObj" />
           <AutoComplete labelName="Authors" :data="authors" :multipleValues="true" @valueUpdated="updateReqObj" />
           <ion-list>
-            <ion-item lines="none" v-for="(author, idx) in chosenAuthors" :key="idx">
+            <ion-chip v-for="(author, idx) in chosenAuthors" :key="idx">
               <ion-label>{{ author.value }}</ion-label>
               <ion-icon :icon="closeCircle" @click="chosenAuthors.splice(idx, 1)" />
-            </ion-item>
+            </ion-chip>
           </ion-list>
 
           <ion-item>
             <ion-label position="stacked">Type</ion-label>
-            <ion-select v-model="chosenType">
-              <ion-select-option v-for="(type, idx) in types" :key="idx" :value="type">
+            <ion-select v-model="chosenType" :disabled="chosenTitle.id && chosenTitle.id >= 0">
+              <ion-select-option v-for="(type, idx) in types" :key="idx" :value="type.id">
                 {{ type.value }}
               </ion-select-option>
             </ion-select>
@@ -31,7 +31,7 @@
           <ion-list>
             <ion-chip v-for="(tag, idx) in chosenTags" :key="idx">
               <ion-label>{{ tag.value }}</ion-label>
-              <ion-icon :icon="closeCircle" @click="chosenTags.splice(idx), 1" />
+              <ion-icon :icon="closeCircle" @click="chosenTags.splice(idx, 1)" />
             </ion-chip>
           </ion-list>
 
@@ -79,7 +79,7 @@ export default defineComponent({
 
       chosenTitle: {},
       chosenAuthors: [],
-      chosenType: {},
+      chosenType: null,
       chosenTags: []
     };
   },
@@ -114,6 +114,10 @@ export default defineComponent({
 
     updateReqObj(field, input) {
       if(field == "Title") {
+        if(this.chosenTitle && input.id >= 0 && this.chosenTitle.id == input.id)
+        //nothing new has been sent; don't react
+          return;
+        
         this.chosenTitle = input;
         console.log(input);
 
@@ -124,14 +128,14 @@ export default defineComponent({
 
             if(data) {
               this.chosenAuthors = data.authors;
-              this.chosenType = data.type;
+              this.chosenType = data.type.id;
             } else {
               console.log("A funk: can't find title in db", input)
             }
           })
         } else { //reset
           this.chosenAuthors = [];
-          this.chosenType = {};
+          this.chosenType = null;
         }
       } else if(field == "Authors") {
         if(this.chosenAuthors.map(author => author.value.toLowerCase()).includes(input.value.toLowerCase()))
@@ -151,7 +155,7 @@ export default defineComponent({
         },
         title: {
           value: "value" in this.chosenTitle && this.chosenTitle.value.trim().length > 0 ? this.chosenTitle.value : null,
-          type_id: "id" in this.chosenType ? this.chosenType.id : null
+          type_id: this.chosenType ? this.chosenType : null
         },
         authors: this.chosenAuthors,
         tags: this.chosenTags

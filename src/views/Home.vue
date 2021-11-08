@@ -165,9 +165,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
-ion-content {
+#container {
   text-align: center;
-  --padding-top: 10%;
+  --padding-top: 2%;
+  --padding-bottom: 30%;
 }
 
 .quoteText {
